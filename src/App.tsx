@@ -40,10 +40,7 @@ export default function App() {
           default
         />
       </Video>
-
-      {player && (
-        <Controls player={player} fullscreenElem={containerRef.current} />
-      )}
+      {player && <Controls player={player} fullscreenElemRef={containerRef} />}
     </div>
   )
 }

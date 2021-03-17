@@ -1,7 +1,9 @@
 import * as React from 'react'
 
+// this was just a small experiment but the overall player should have some
+// "store" concept
 import {useAtom, atom} from 'jotai'
-const testAtom = atom(33)
+const volumeAtom = atom(10)
 
 function VolumeSlider({
   initialVolume,
@@ -12,30 +14,32 @@ function VolumeSlider({
 }) {
   const [volume, setVolume] = React.useState<number>(initialVolume)
   return (
-    <input
-      value={volume}
-      type="range"
-      min="0"
-      max="100"
-      onChange={(e) => {
-        setVolume(Number(e.target.value))
-        onVolumeChange(Number(e.target.value))
-      }}
-    />
+    <label>
+      volume
+      <input
+        value={volume}
+        type="range"
+        min="0"
+        max="100"
+        onChange={(e) => {
+          setVolume(Number(e.target.value))
+          onVolumeChange(Number(e.target.value))
+        }}
+      />
+    </label>
   )
 }
 
-const Controls: React.FC<{player: any; fullscreenElem: any}> = ({
+const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
   player,
-  fullscreenElem,
+  fullscreenElemRef,
 }) => {
-  const percentComplete = React.useRef(0)
-  const [test, setTest] = useAtom(testAtom)
+  const [test, setTest] = React.useState(0)
+  const [volume, setVolume] = useAtom(volumeAtom)
 
   function onPlayerProgress(e: any) {
-    console.log(e)
     const player = e.target as HTMLMediaElement
-    console.log(player.currentTime / player.duration)
+    // console.log(player.currentTime / player.duration)
     const percent = player.currentTime / player.duration
     if (percent) setTest(percent * 100)
   }
@@ -54,6 +58,11 @@ const Controls: React.FC<{player: any; fullscreenElem: any}> = ({
     const player = e.target as HTMLMediaElement
     console.log(player.currentTime / player.duration)
   }
+
+  React.useEffect(() => {
+    if (!player) return
+    player.volume = volume / 100
+  }, [player, volume])
 
   React.useEffect(() => {
     if (!player) return
@@ -106,26 +115,26 @@ const Controls: React.FC<{player: any; fullscreenElem: any}> = ({
   // getTimeToSeekSeconds
   //
 
-  const percent = (player && player.currentTime / player.duration) || 0
+  console.log(test)
   return (
-    <div>
-      <input
-        value={test}
-        type="range"
-        min="0"
-        max="100"
-        readOnly
-        style={{maxWidth: '600px'}}
-      />
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'start',
+        maxWidth: '600px',
+      }}
+    >
+      <input value={test} type="range" min="0" max="100" readOnly />
       <button onClick={() => player.play()}>play</button>
       <button onClick={() => player.pause()}>pause</button>
-      <button onClick={() => fullscreenElem.requestFullscreen()}>
+      <button onClick={() => fullscreenElemRef.current.requestFullscreen()}>
         full screen
       </button>
       <VolumeSlider
-        initialVolume={80}
+        initialVolume={volume}
         onVolumeChange={(volume: number) => {
-          player.volume = volume / 100
+          setVolume(volume)
         }}
       />
     </div>
