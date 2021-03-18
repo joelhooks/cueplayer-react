@@ -29,9 +29,10 @@ export default function App() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'start',
+        maxWidth: '600px',
       }}
     >
-      <Video style={{maxWidth: '600px'}} poster={video.poster} playsInline>
+      <Video poster={video.poster} playsInline>
         <track
           src={video.subtitlesUrl}
           kind="subtitles"

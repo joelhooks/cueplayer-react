@@ -1,4 +1,5 @@
 import * as React from 'react'
+import ReactSlider from 'react-slider'
 
 // this was just a small experiment but the overall player should have some
 // "store" concept
@@ -36,6 +37,17 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
 }) => {
   const [test, setTest] = React.useState(0)
   const [volume, setVolume] = React.useState(30)
+
+  const {currentTime, seekingTime, duration = 0} = player
+
+  function getPercent() {
+    const {currentTime, seekingTime, duration} = player
+    const time = seekingTime || currentTime
+    const percent = time / duration
+    return percent >= 1 ? 1 : percent
+  }
+
+  console.log(currentTime, seekingTime, duration)
 
   function onPlayerProgress(e: any) {
     const player = e.target as HTMLMediaElement
@@ -85,37 +97,6 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
     }
   }, [player])
 
-  // onPause,
-  // onEnded,
-  // onError,
-  // onPlayerProgress,*
-  // onSubtitleChange,
-  // onVideoQualityChanged,
-  // onMuted,
-  // onViewModeChanged,
-  // volumechanged*
-  // stallstarted
-  // stallended
-  // unmuted
-  // mute
-
-  // onPlay
-  // onReady
-
-  // play
-  // pause
-  // isFullscreen
-  // stop
-  // seekTo
-  // getCurrentTime
-  // setVolume
-  // setPlaybackRate
-  // getDuration
-  // getFractionPlayed
-  // getFractionLoaded
-  // getTimeToSeekSeconds
-  //
-
   return (
     <div
       style={{
@@ -125,7 +106,19 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
         maxWidth: '600px',
       }}
     >
-      <input value={test} type="range" min="0" max="100" readOnly />
+      {/* styled via global CSS */}
+      <ReactSlider
+        max={duration}
+        value={currentTime}
+        className="horizontal-slider"
+        thumbClassName="example-thumb"
+        trackClassName="example-track"
+        onChange={(value) => {
+          player.currentTime = value
+        }}
+        renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+      />
+
       <button onClick={() => player.play()}>play</button>
       <button onClick={() => player.pause()}>pause</button>
       <button onClick={() => fullscreenElemRef.current.requestFullscreen()}>
@@ -143,3 +136,34 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
 }
 
 export default Controls
+
+// onPause,
+// onEnded,
+// onError,
+// onPlayerProgress,*
+// onSubtitleChange,
+// onVideoQualityChanged,
+// onMuted,
+// onViewModeChanged,
+// volumechanged*
+// stallstarted
+// stallended
+// unmuted
+// mute
+
+// onPlay
+// onReady
+
+// play
+// pause
+// isFullscreen
+// stop
+// seekTo
+// getCurrentTime
+// setVolume
+// setPlaybackRate
+// getDuration
+// getFractionPlayed
+// getFractionLoaded
+// getTimeToSeekSeconds
+//
