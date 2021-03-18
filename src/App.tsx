@@ -31,7 +31,7 @@ export default function App() {
         justifyContent: 'start',
       }}
     >
-      <Video style={{maxWidth: '600px'}}>
+      <Video style={{maxWidth: '600px'}} poster={video.poster} playsInline>
         <track
           src={video.subtitlesUrl}
           kind="subtitles"

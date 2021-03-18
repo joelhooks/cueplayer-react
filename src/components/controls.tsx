@@ -2,8 +2,8 @@ import * as React from 'react'
 
 // this was just a small experiment but the overall player should have some
 // "store" concept
-import {useAtom, atom} from 'jotai'
-const volumeAtom = atom(10)
+
+import {usePlayerStore} from './player'
 
 function VolumeSlider({
   initialVolume,
@@ -35,7 +35,7 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
   fullscreenElemRef,
 }) => {
   const [test, setTest] = React.useState(0)
-  const [volume, setVolume] = useAtom(volumeAtom)
+  const [volume, setVolume] = React.useState(30)
 
   function onPlayerProgress(e: any) {
     const player = e.target as HTMLMediaElement
@@ -61,6 +61,7 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
 
   React.useEffect(() => {
     if (!player) return
+    console.log('VOLUME EFFECT')
     player.volume = volume / 100
   }, [player, volume])
 
@@ -115,7 +116,6 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
   // getTimeToSeekSeconds
   //
 
-  console.log(test)
   return (
     <div
       style={{
@@ -134,6 +134,7 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
       <VolumeSlider
         initialVolume={volume}
         onVolumeChange={(volume: number) => {
+          console.log(volume)
           setVolume(volume)
         }}
       />
