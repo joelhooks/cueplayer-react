@@ -7,17 +7,16 @@ const reducer = (state: any, action: any) => {
     case 'TIME_CHANGE':
       return {...state, currentTime: action.currentTime}
     case 'PLAYER_UPDATE':
-      return {...state, currentTime: action.player}
+      return {...state, player: action.player}
+    case 'SET_DURATION':
+      return {...state, duration: action.duration}
   }
 }
 
 export const usePlayerStore = create((set) => ({
   player: null,
   currentTime: 0,
-  setPlayer: (player: any) =>
-    set((state) => ({
-      player,
-    })),
+  duration: 0,
   dispatch: (args: any) => set((state: any) => reducer(state, args)),
 }))
 
@@ -79,25 +78,40 @@ export const useVideo = (videoOptions: any) => {
       return hls
     }
 
+    function onDurationChange() {
+      dispatch({type: 'SET_DURATION', duration: player?.duration || 0})
+    }
+
+    function addEventListeners() {
+      player?.addEventListener('timeupdate', onPlayerProgress)
+      player?.addEventListener('durationchange', onDurationChange)
+    }
+
+    function removeEventListeners() {
+      player?.removeEventListener('timeupdate', onPlayerProgress)
+      player?.removeEventListener('durationchange', onDurationChange)
+    }
+
     if (Hls.isSupported()) {
       const hls = player && initPlayer(player)
       dispatch({type: 'PLAYER_UPDATE', player})
-      player?.addEventListener('timeupdate', onPlayerProgress)
+      addEventListeners()
 
       return () => {
         if (hls != null) {
           hls.destroy()
         }
-        player?.removeEventListener('timeupdate', onPlayerProgress)
+        removeEventListeners()
       }
     } else if (player?.canPlayType('application/vnd.apple.mpegurl')) {
-      console.log('ios')
+      // we have to branch on ios because it plays hls natively
+      // and requires a different approach 😭
       player.src = videoOptions.url
       setReady(true)
-      player?.addEventListener('timeupdate', onPlayerProgress)
+      addEventListeners()
 
       return () => {
-        player?.removeEventListener('timeupdate', onPlayerProgress)
+        removeEventListeners()
       }
     }
   }, [videoOptions, videoNode, dispatch, onPlayerProgress])

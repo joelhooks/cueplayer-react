@@ -4,6 +4,8 @@ import ReactSlider from 'react-slider'
 // this was just a small experiment but the overall player should have some
 // "store" concept
 
+import {usePlayerStore} from './player'
+
 function VolumeSlider({
   initialVolume,
   onVolumeChange,
@@ -33,20 +35,26 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
   player,
   fullscreenElemRef,
 }) => {
+  const [test, setTest] = React.useState(0)
   const [volume, setVolume] = React.useState(30)
 
-  const {currentTime, seekingTime, duration = 0} = player
+  const currentTime: any = usePlayerStore((state) => state.currentTime)
+  const duration: any = usePlayerStore((state) => state.duration)
 
-  // function getPercent() {
-  //   const {currentTime, seekingTime, duration} = player
-  //   const time = seekingTime || currentTime
-  //   const percent = time / duration
-  //   return percent >= 1 ? 1 : percent
-  // }
+  console.log(currentTime, duration)
+  function getPercent() {
+    const {currentTime, seekingTime, duration} = player
+    const time = seekingTime || currentTime
+    const percent = time / duration
+    return percent >= 1 ? 1 : percent
+  }
 
-  console.log(currentTime, seekingTime, duration)
-
-  function onPlayerProgress(e: any) {}
+  function onPlayerProgress(e: any) {
+    const player = e.target as HTMLMediaElement
+    // console.log(player.currentTime / player.duration)
+    const percent = player.currentTime / player.duration
+    if (percent) setTest(percent * 100)
+  }
 
   function onVolumeChange(e: any) {
     const player = e.target as HTMLMediaElement
