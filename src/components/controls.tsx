@@ -40,6 +40,7 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
 
   const currentTime: any = usePlayerStore((state) => state.currentTime)
   const duration: any = usePlayerStore((state) => state.duration)
+  const dispatch: any = usePlayerStore((state) => state.dispatch)
 
   console.log(currentTime, duration)
   function getPercent() {
@@ -113,7 +114,12 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
         className="horizontal-slider"
         thumbClassName="example-thumb"
         trackClassName="example-track"
+        onAfterChange={(value) => {
+          dispatch({type: 'TIME_CHANGE', currentTime: value})
+          player.currentTime = value
+        }}
         onChange={(value) => {
+          dispatch({type: 'TIME_CHANGE', currentTime: value})
           player.currentTime = value
         }}
         renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
