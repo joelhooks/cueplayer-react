@@ -1,5 +1,7 @@
 import * as React from 'react'
 import ReactSlider from 'react-slider'
+import {formatTime} from '../utils/format-time'
+import Captions from './captions'
 
 // this was just a small experiment but the overall player should have some
 // "store" concept
@@ -40,6 +42,7 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
 
   const currentTime: any = usePlayerStore((state) => state.currentTime)
   const duration: any = usePlayerStore((state) => state.duration)
+
   const dispatch: any = usePlayerStore((state) => state.dispatch)
 
   console.log(currentTime, duration)
@@ -83,7 +86,7 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
 
     // subtitles on
     for (var i = 0; i < player.textTracks.length; i++) {
-      player.textTracks[i].mode = 'showing'
+      player.textTracks[i].mode = 'hidden'
     }
 
     player.addEventListener('timeupdate', onPlayerProgress)
@@ -107,6 +110,7 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
         maxWidth: '600px',
       }}
     >
+      <Captions />
       {/* styled via global CSS */}
       <ReactSlider
         max={duration}
@@ -122,7 +126,9 @@ const Controls: React.FC<{player: any; fullscreenElemRef: any}> = ({
           dispatch({type: 'TIME_CHANGE', currentTime: value})
           player.currentTime = value
         }}
-        renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+        renderThumb={(props, state) => (
+          <div {...props}>{formatTime(state.valueNow)}</div>
+        )}
       />
 
       <button onClick={() => player.play()}>play</button>

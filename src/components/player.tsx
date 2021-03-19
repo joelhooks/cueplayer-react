@@ -1,9 +1,12 @@
 import * as React from 'react'
 import Hls from 'hls.js'
 import create from 'zustand'
+import {devtools} from 'zustand/middleware'
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
+    case 'SET_CAPTION':
+      return {...state, currentCaption: action.text}
     case 'TIME_CHANGE':
       return {...state, currentTime: action.currentTime}
     case 'PLAYER_UPDATE':
@@ -13,12 +16,15 @@ const reducer = (state: any, action: any) => {
   }
 }
 
-export const usePlayerStore = create((set) => ({
-  player: null,
-  currentTime: 0,
-  duration: 0,
-  dispatch: (args: any) => set((state: any) => reducer(state, args)),
-}))
+export const usePlayerStore = create(
+  devtools((set) => ({
+    player: null,
+    currentTime: 0,
+    duration: 0,
+    currentCaption: ' ',
+    dispatch: (args: any) => set((state: any) => reducer(state, args)),
+  })),
+)
 
 export const useVideo = (videoOptions: any) => {
   const videoNode = React.useRef<HTMLMediaElement>()
@@ -82,14 +88,31 @@ export const useVideo = (videoOptions: any) => {
       dispatch({type: 'SET_DURATION', duration: player?.duration || 0})
     }
 
+    function onMetadataLoaded() {
+      const textTracks: any = player?.textTracks[0]
+      textTracks.mode = 'hidden'
+      const cues = textTracks.cues
+
+      for (let index = 0; index < cues.length; index++) {
+        var cue = cues[index]
+        cue.onenter = (e: any) => {
+          const cue = e.target
+          dispatch({type: 'SET_CAPTION', text: cue.text})
+        }
+        // cue.onexit = cueExit
+      }
+    }
+
     function addEventListeners() {
       player?.addEventListener('timeupdate', onPlayerProgress)
       player?.addEventListener('durationchange', onDurationChange)
+      player?.addEventListener('loadedmetadata', onMetadataLoaded)
     }
 
     function removeEventListeners() {
       player?.removeEventListener('timeupdate', onPlayerProgress)
       player?.removeEventListener('durationchange', onDurationChange)
+      player?.removeEventListener('loadedmetadata', onMetadataLoaded)
     }
 
     if (Hls.isSupported()) {

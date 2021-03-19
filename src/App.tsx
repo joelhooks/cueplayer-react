@@ -2,6 +2,7 @@ import React from 'react'
 import {useVideo} from './components/player'
 
 import Controls from './components/controls'
+import {usePlayerStore} from './components/player'
 
 //see: https://github.com/video-dev/hls.js/blob/master/docs/API.md
 
@@ -18,6 +19,7 @@ const video = {
 
 export default function App() {
   const containerRef = React.createRef<any>()
+
   const {Video, player} = useVideo({
     url: video.hls_url,
   })
