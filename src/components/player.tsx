@@ -44,7 +44,12 @@ export const useVideo = (videoOptions: any) => {
   )
 
   React.useEffect(() => {
-    const player = videoNode.current
+    fetch('/notes.vtt')
+    videoNode.current?.addTextTrack('metadata', 'notes')
+  }, [videoNode])
+
+  React.useEffect(() => {
+    const player: any = videoNode.current
     const hlsConfig = {enableWorker: true}
 
     function initPlayer(video: HTMLMediaElement) {
@@ -55,7 +60,7 @@ export const useVideo = (videoOptions: any) => {
       hls.attachMedia(video)
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {
         hls.loadSource(videoOptions.url)
-        hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+        hls.on(Hls.Events.MANIFEST_PARSED, function (event:any, data:any) {
           console.log(
             'manifest loaded, found ' + data.levels.length + ' quality level',
             data.levels,
@@ -65,7 +70,7 @@ export const useVideo = (videoOptions: any) => {
         })
       })
 
-      hls.on(Hls.Events.ERROR, function (event, data) {
+      hls.on(Hls.Events.ERROR, function (event:any, data:any) {
         if (data.fatal) {
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
@@ -104,8 +109,36 @@ export const useVideo = (videoOptions: any) => {
     }
 
     function addEventListeners() {
-      player?.addEventListener('timeupdate', onPlayerProgress)
-      player?.addEventListener('durationchange', onDurationChange)
+      const tracks = player.textTracks
+      tracks.onaddtrack = (e: any) => {
+        const track = e.track
+        track.oncuechange = (e: any) => {
+          const activeCues = Array.from(e.currentTarget.activeCues)
+          const cue: any = activeCues[0]
+
+          if(!cue) return
+
+          switch (track.kind) {
+            case 'subtitles':
+
+              track.mode = 'hidden'
+              // if(cue) {
+              //   dispatch({type: 'SET_CAPTION', text: cue.text})
+              // } else {
+              //   dispatch({type: 'SET_CAPTION', text: ''})
+              // }
+              break;
+            case 'metadata':
+              console.log(cue)
+              console.log(cue.text)
+              break;
+          }
+
+        }
+      }
+
+      player.addEventListener('timeupdate', onPlayerProgress)
+      player.addEventListener('durationchange', onDurationChange)
       player?.addEventListener('loadedmetadata', onMetadataLoaded)
     }
 
@@ -140,15 +173,57 @@ export const useVideo = (videoOptions: any) => {
   }, [videoOptions, videoNode, dispatch, onPlayerProgress])
 
   const Video = React.useCallback(
-    ({children, ...props}) => {
+    ({children, ...rest}) => {
+      function isVideoChild(c: any) {
+        if (c.props && c.props.isVideoChild) {
+          return true;
+        }
+        return c.type === 'source' || c.type === 'track';
+      }
+
+      function renderChildren() {
+        const props = {
+          ...rest,
+          video: videoNode.current
+        };
+
+        // to make sure the children can get video property
+        if (!videoNode.current) {
+          return null;
+        }
+
+        // only keep <source />, <track />, <MyComponent isVideoChild /> elements
+        return React.Children.toArray(children)
+            .filter(isVideoChild)
+            .map((c:any, index: number) => {
+              let cprops;
+              console.log(c)
+              if (typeof c.type === 'string') {
+                // add onError to <source />
+                if (c.type === 'source') {
+                  cprops = { ...c.props, ref: index };
+                  const preOnError = cprops.onError;
+                  cprops.onError = (...args: any[]) => {
+                    if (preOnError) {
+                      preOnError(...args);
+                    }
+                    console.error(args);
+                  };
+                }
+              } else {
+                cprops = {...props, ref: index};
+              }
+              return React.cloneElement(c, cprops);
+            });
+      }
       return (
         <video
           key={changedKey}
           ref={videoNode}
           crossOrigin="anonymous"
-          {...props}
+          {...rest}
         >
-          {children}
+          {renderChildren()}
         </video>
       )
     },
