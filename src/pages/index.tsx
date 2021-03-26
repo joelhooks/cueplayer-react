@@ -39,12 +39,10 @@ export default function Home() {
     })
 
     React.useEffect(() => {
-        if(!metadataTrack) return
         function doStuff(e:any) {
             // playerjs.ads.startLinearAdMode();
             const activeCues: any = metadataTrack.activeCues
             const cues = Array.from(activeCues)
-            console.log(cues)
             if(!isEmpty(cues)) {
                 const cue = JSON.parse(first<any>(cues).text)
                 dispatch({type: 'SET_CUE', cue})
@@ -52,27 +50,25 @@ export default function Home() {
                 dispatch({type: 'CLEAR_CUE'})
             }
         }
+        if(metadataTrack) {
 
-        console.log(metadataTrack)
-        const cancel = setTimeout(() => {
-            setMetadataCues(Array.from(metadataTrack.cues))
-        }, 750)
-        //
+            setTimeout(() => {
 
-        metadataTrack.addEventListener('cuechange', doStuff);
+                setMetadataCues(Array.from(metadataTrack.cues))
+            }, 750)
+
+            metadataTrack.addEventListener('cuechange', doStuff);
+        }
+
         return () => {
-            if(metadataTrack) {
-                metadataTrack.removeEventListener('cuechange', doStuff);
-            }
-            clearTimeout(cancel)
+            metadataTrack?.removeEventListener('cuechange', doStuff);
         }
     }, metadataTrack)
 
     React.useEffect(() => {
         if(!playerjs) return
         var tracks = playerjs.textTracks();
-
-
+        console.log('el', playerjs.el())
 
 
         for (var i = 0; i < tracks.length; i++) {
@@ -92,7 +88,6 @@ export default function Home() {
 
     }, [playerjs])
 
-    console.log(cue)
 
   return (
     <div className="dark:bg-gray-800">
