@@ -1,8 +1,10 @@
 import React from 'react'
 import Head from 'next/head'
 import DarkModeToggle from '../components/dark-mode-toggle'
-import {useVideo} from '../../src/components/player'
-import Controls from '../../src/components/controls'
+import {usePlayerStore, useVideo} from 'components/player'
+import Controls from 'components/controls'
+import {useVideoJS} from "../hooks/use-video-js"
+import {isEmpty, first} from 'lodash'
 
 const video = {
     poster:
@@ -15,9 +17,82 @@ const video = {
 
 export default function Home() {
     const containerRef = React.createRef<any>()
-    const {Video, player} = useVideo({
-        url: video.hls_url,
+    // const {Video, player} = useVideo({
+    //     url: video.hls_url,
+    // })
+
+    const [metadataTrack, setMetadataTrack] = React.useState<any>()
+    const [metadataCues, setMetadataCues] = React.useState<any>([])
+
+    const dispatch: any = usePlayerStore(
+        React.useCallback((state) => state.dispatch, []),
+    )
+
+    const cue: any = usePlayerStore((state) => state.cue)
+
+    const {Video: VideoJS, player: playerjs, ready} = useVideoJS({
+        poster: video.poster,
+        sources: [{src: video.hls_url}],
+        controls: true,
+        playbackRates: [0.5, 1, 1.5, 2],
+        responsive: true,
     })
+
+    React.useEffect(() => {
+        if(!metadataTrack) return
+        function doStuff(e:any) {
+            // playerjs.ads.startLinearAdMode();
+            const activeCues: any = metadataTrack.activeCues
+            const cues = Array.from(activeCues)
+            console.log(cues)
+            if(!isEmpty(cues)) {
+                const cue = JSON.parse(first<any>(cues).text)
+                dispatch({type: 'SET_CUE', cue})
+            } else {
+                dispatch({type: 'CLEAR_CUE'})
+            }
+        }
+
+        console.log(metadataTrack)
+        const cancel = setTimeout(() => {
+            setMetadataCues(Array.from(metadataTrack.cues))
+        }, 750)
+        //
+
+        metadataTrack.addEventListener('cuechange', doStuff);
+        return () => {
+            if(metadataTrack) {
+                metadataTrack.removeEventListener('cuechange', doStuff);
+            }
+            clearTimeout(cancel)
+        }
+    }, metadataTrack)
+
+    React.useEffect(() => {
+        if(!playerjs) return
+        var tracks = playerjs.textTracks();
+
+
+
+
+        for (var i = 0; i < tracks.length; i++) {
+            var track = tracks[i];
+
+            // Find the metadata track that's labeled "ads".
+            if (track.kind === 'metadata' && track.label === 'notes') {
+                track.mode = 'hidden';
+
+                // Store it for usage outside of the loop.
+                setMetadataTrack(track)
+
+            }
+        }
+
+
+
+    }, [playerjs])
+
+    console.log(cue)
 
   return (
     <div className="dark:bg-gray-800">
@@ -39,7 +114,22 @@ export default function Home() {
                 maxWidth: '600px',
             }}
         >
-            <Video poster={video.poster} playsInline>
+            {/*<Video poster={video.poster} playsInline>*/}
+            {/*    <track*/}
+            {/*        src={video.subtitlesUrl}*/}
+            {/*        kind="subtitles"*/}
+            {/*        srcLang="en"*/}
+            {/*        label="English"*/}
+            {/*    />*/}
+            {/*    <track*/}
+            {/*        id="notes"*/}
+            {/*        src="/notes.vtt"*/}
+            {/*        kind="metadata"*/}
+            {/*        label="notes"*/}
+            {/*    />*/}
+            {/*</Video>*/}
+            {/*{player && <Controls player={player} fullscreenElemRef={containerRef} />}*/}
+            <VideoJS poster={video.poster} playsInline>
                 <track
                     src={video.subtitlesUrl}
                     kind="subtitles"
@@ -48,13 +138,16 @@ export default function Home() {
                 />
                 <track
                     id="notes"
-                    src="/notes.vtt"
+                    src="/api/cues"
                     kind="metadata"
                     label="notes"
                 />
-            </Video>
-            {player && <Controls player={player} fullscreenElemRef={containerRef} />}
-
+            </VideoJS>
+            {metadataCues.map((mcue: any) => {
+                const cuejs = JSON.parse(mcue.text)
+                console.log(cue, cuejs)
+                return (<div className={cuejs.description === cue?.description ? 'text-blue-600' : ''} key={cuejs.description}>{cuejs.description}</div>)
+            })}
         </div>
     </div>
   )

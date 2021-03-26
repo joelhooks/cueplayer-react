@@ -2,6 +2,7 @@ import * as React from 'react'
 import Hls from 'hls.js'
 import create from 'zustand'
 import {devtools} from 'zustand/middleware'
+import {first} from 'lodash'
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -13,6 +14,10 @@ const reducer = (state: any, action: any) => {
       return {...state, player: action.player}
     case 'SET_DURATION':
       return {...state, duration: action.duration}
+    case 'SET_CUE':
+      return {...state, cue: action.cue}
+    case 'CLEAR_CUE':
+      return {...state, cue: null}
   }
 }
 
@@ -22,6 +27,7 @@ export const usePlayerStore = create(
     currentTime: 0,
     duration: 0,
     currentCaption: ' ',
+    cue: null,
     dispatch: (args: any) => set((state: any) => reducer(state, args)),
   })),
 )
@@ -94,18 +100,33 @@ export const useVideo = (videoOptions: any) => {
     }
 
     function onMetadataLoaded() {
-      const textTracks: any = player?.textTracks[0]
-      textTracks.mode = 'hidden'
-      const cues = textTracks.cues
+      const textTracks: TextTrack[] = Array.from(player.textTracks)
+      const subtitleTrack: any = first<TextTrack>(textTracks.filter((track: TextTrack) => track.kind === 'subtitles'))
 
-      for (let index = 0; index < cues.length; index++) {
-        var cue = cues[index]
-        cue.onenter = (e: any) => {
-          const cue = e.target
-          dispatch({type: 'SET_CAPTION', text: cue.text})
+      subtitleTrack.mode = 'hidden'
+      const cues: TextTrackCueList = subtitleTrack.cues
+
+      function listenForCues(cues: TextTrackCueList) {
+        for (let index = 0; index < cues.length; index++) {
+          var cue = cues[index]
+          cue.onenter = (e: any) => {
+            const cue = e.target
+            dispatch({type: 'SET_CAPTION', text: cue.text})
+          }
         }
-        // cue.onexit = cueExit
       }
+
+      function checkForCues(cues: TextTrackCueList) {
+        if(cues.length > 0) {
+          listenForCues(subtitleTrack.cues)
+        } else {
+          setTimeout(() => {
+            checkForCues(subtitleTrack.cues)
+          }, 500)
+        }
+      }
+
+      checkForCues(cues)
     }
 
     function addEventListeners() {
