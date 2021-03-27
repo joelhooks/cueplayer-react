@@ -124,7 +124,7 @@ export default function Home() {
             {/*    />*/}
             {/*</Video>*/}
             {/*{player && <Controls player={player} fullscreenElemRef={containerRef} />}*/}
-            <VideoJS poster={video.poster} playsInline>
+            <VideoJS poster={video.poster} playsInline muted>
                 <track
                     src={video.subtitlesUrl}
                     kind="subtitles"

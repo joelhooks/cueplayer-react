@@ -3,6 +3,10 @@ import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 import * as React from 'react'
 import {isFunction} from 'lodash'
+import vjsEpisodeList from "../components/episode-list";
+
+const vjsComponent = videojs.getComponent('Component');
+vjsComponent.registerComponent('vjsEpisodeList', vjsEpisodeList);
 
 videojs.registerPlugin('chapterMarkers', function() {
     var myPlayer = this,
@@ -41,11 +45,14 @@ videojs.registerPlugin('chapterMarkers', function() {
             playheadWell: any = myPlayer.el().querySelector('.vjs-progress-holder');
         for (i = 0; i < iMax; i++) {
             console.log(cuePointsAra[i], videoDuration, Math.ceil((cuePointsAra[i] / videoDuration * 100)))
-            var elem = document.createElement('div');
-            elem.className = 'vjs-marker';
-            elem.id = 'cp' + i;
-            elem.style.left = (cuePointsAra[i] / videoDuration) * 100 + '%';
-            console.log('elem.style.left', elem.style.left);
+
+            const elem: any = videojs.dom.createEl('div', {}, {
+                id: `cp-${i}`,
+                class: `vjs-marker`,
+                style: `left: ${(cuePointsAra[i] / videoDuration) * 100 + '%'};`
+            })
+
+            console.log(elem)
             playheadWell.appendChild(elem);
         }
     }
@@ -78,6 +85,8 @@ console.log(videojs.dom)
 
     player.current.chapterMarkers();
 
+    player.current.getChild('controlBar').addChild('vjsEpisodeList', {})
+
     player.current.ready(() => {
       setReady(true)
     })
@@ -87,10 +96,10 @@ console.log(videojs.dom)
   }, [changedKey])
 
   const Video = useCallback(
-    ({children, subtitlesUrl}) => {
+    ({children, ...props}) => {
       return (
         <div data-vjs-player key={changedKey}>
-          <video ref={videoNode} className="video-js">
+          <video ref={videoNode} className="video-js" {...props}>
             {children}
           </video>
         </div>
