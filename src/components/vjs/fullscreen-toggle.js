@@ -1,90 +1,70 @@
-/**
- * @file fullscreen-toggle.js
- */
-import Button from '../button.js';
-import Component from '../component.js';
-import document from 'global/document';
+import FullscreenApi from "./fullscreen-api";
+import videojs from "video.js";
+const vjsButton = videojs.getComponent('Button');
 
-/**
- * Toggle fullscreen video
- *
- * @extends Button
- */
-class FullscreenToggle extends Button {
+class EHFullscreenToggle extends vjsButton
+{
+    fullscreenApi
 
-    /**
-     * Creates an instance of this class.
-     *
-     * @param {Player} player
-     *        The `Player` that this class should be attached to.
-     *
-     * @param {Object} [options]
-     *        The key/value store of player options.
-     */
-    constructor(player, options) {
+    constructor(player, options)
+    {
         super(player, options);
-        this.on(player, 'fullscreenchange', (e) => this.handleFullscreenChange(e));
-
-        if (document[player.fsApi_.fullscreenEnabled] === false) {
+        console.log(options)
+        this.fullscreenApi = new FullscreenApi(options.fullscreenElement || options.playerOptions?.fullscreenElement);
+        this.fullscreenApi.addEventListener
+        (
+            'fullscreenchange',
+            () =>
+            {
+                if (this.fullscreenApi.isFullscreen)
+                {
+                    // noinspection JSUnresolvedFunction
+                    this.controlText('Non-Fullscreen');
+                    player.isFullscreen(true);
+                }
+                else
+                {
+                    // noinspection JSUnresolvedFunction
+                    this.controlText('Fullscreen');
+                    player.isFullscreen(false);
+                }
+            }
+        );
+        if (!this.fullscreenApi.fullscreenEnabled)
+        {
             this.disable();
         }
+        this.on
+        (
+            'unmute',
+            event =>
+            {
+                if(this.fullscreenApi.isFullscreen)
+                {
+                    event.stopPropagation();
+                }
+            }
+        );
     }
-
-    /**
-     * Builds the default DOM `className`.
-     *
-     * @return {string}
-     *         The DOM `className` for this object.
-     */
-    buildCSSClass() {
+    // noinspection JSUnusedGlobalSymbols
+    buildCSSClass()
+    {
+        // noinspection JSUnresolvedFunction
         return `vjs-fullscreen-control ${super.buildCSSClass()}`;
     }
-
-    /**
-     * Handles fullscreenchange on the player and change control text accordingly.
-     *
-     * @param {EventTarget~Event} [event]
-     *        The {@link Player#fullscreenchange} event that caused this function to be
-     *        called.
-     *
-     * @listens Player#fullscreenchange
-     */
-    handleFullscreenChange(event) {
-        if (this.player_.isFullscreen()) {
-            this.controlText('Non-Fullscreen');
-        } else {
-            this.controlText('Fullscreen');
+    // noinspection JSMethodCanBeStatic,JSUnusedGlobalSymbols
+    handleClick()
+    {
+        if (this.fullscreenApi.isFullscreen)
+        {
+            this.fullscreenApi.exitFullscreen();
+        }
+        else
+        {
+            this.fullscreenApi.requestFullscreen();
         }
     }
-
-    /**
-     * This gets called when an `FullscreenToggle` is "clicked". See
-     * {@link ClickableComponent} for more detailed information on what a click can be.
-     *
-     * @param {EventTarget~Event} [event]
-     *        The `keydown`, `tap`, or `click` event that caused this function to be
-     *        called.
-     *
-     * @listens tap
-     * @listens click
-     */
-    handleClick(event) {
-        if (!this.player_.isFullscreen()) {
-            this.player_.requestFullscreen();
-        } else {
-            this.player_.exitFullscreen();
-        }
-    }
-
 }
 
-/**
- * The text that should display over the `FullscreenToggle`s controls. Added for localization.
- *
- * @type {string}
- * @private
- */
-FullscreenToggle.prototype.controlText_ = 'Fullscreen';
 
-Component.registerComponent('FullscreenToggle', FullscreenToggle);
-export default FullscreenToggle;
+export default EHFullscreenToggle;

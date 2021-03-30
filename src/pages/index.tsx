@@ -18,12 +18,6 @@ const video = {
 
 export default function Home() {
     const containerRef = React.createRef<any>()
-    // const {Video, player} = useVideo({
-    //     url: video.hls_url,
-    // })
-
-    const [videoResource, setVideoResource] = React.useState<any>(video)
-
     const [metadataTrack, setMetadataTrack] = React.useState<any>()
     const [metadataCues, setMetadataCues] = React.useState<any>([])
 
@@ -38,7 +32,10 @@ export default function Home() {
         controls: true,
         playbackRates: [0.5, 1, 1.5, 2],
         responsive: true,
-    })
+        controlBar: {
+            fullscreenToggle: false,
+        },
+    }, containerRef)
 
     React.useEffect(() => {
         function doStuff(e:any) {
@@ -65,7 +62,7 @@ export default function Home() {
         return () => {
             metadataTrack?.removeEventListener('cuechange', doStuff);
         }
-    }, metadataTrack)
+    }, [metadataTrack])
 
     React.useEffect(() => {
         if(!playerjs) return
@@ -126,10 +123,10 @@ export default function Home() {
             {/*    />*/}
             {/*</Video>*/}
             {/*{player && <Controls player={player} fullscreenElemRef={containerRef} />}*/}
-            <VideoJS poster={videoResource.poster} playsInline muted>
-                <source src={videoResource.hls_url}/>
+            <VideoJS poster={video.poster} playsInline muted>
+                <source src={video.hls_url}/>
                 <track
-                    src={videoResource.subtitlesUrl}
+                    src={video.subtitlesUrl}
                     kind="subtitles"
                     srcLang="en"
                     label="English"
@@ -146,15 +143,7 @@ export default function Home() {
                 console.log(cue, cuejs)
                 return (<div className={cuejs.description === cue?.description ? 'text-blue-600' : ''} key={cuejs.description}>{cuejs.description}</div>)
             })}
-            <button onClick={() => {
-                setVideoResource(pickVideoResource('rxjs'))
-            }}>rxjs</button>
-            <button onClick={() => {
-                setVideoResource(pickVideoResource('testing'))
-            }}>testing</button>
-            <button onClick={() => {
-                setVideoResource(pickVideoResource('redux'))
-            }}>redux</button>
+
         </div>
     </div>
   )

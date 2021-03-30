@@ -4,9 +4,11 @@ import 'video.js/dist/video-js.css'
 import * as React from 'react'
 import {isFunction} from 'lodash'
 import vjsEpisodeList from "../components/episode-list";
+import EHFullscreenToggle from "../components/vjs/fullscreen-toggle";
 
 const vjsComponent = videojs.getComponent('Component');
 vjsComponent.registerComponent('vjsEpisodeList', vjsEpisodeList);
+vjsComponent.registerComponent('EHFullscreenToggle', EHFullscreenToggle);
 
 videojs.registerPlugin('chapterMarkers', function() {
     var myPlayer = this,
@@ -58,8 +60,9 @@ videojs.registerPlugin('chapterMarkers', function() {
     }
 })
 
-export const useVideoJS = (videoJsOptions: any) => {
+export const useVideoJS = (videoJsOptions: any, container:any) => {
   const videoNode = useRef(null)
+    const containerNode = useRef(null)
   const [ready, setReady] = useState(false)
   const changedKey = JSON.stringify(videoJsOptions)
   const player = useRef<any>(null)
@@ -75,6 +78,7 @@ console.log(videojs.dom)
 
 
   useEffect(() => {
+      if(!container) return
     player.current = videojs(videoNode.current, videoJsOptions)
       const markerDiv: any = videojs.dom.createEl('div', {}, {
           style: 'left: 50%; border-radius: 50%; width: 20px; height: 20px; background-color: blue; position: absolute; bottom: 0em;'
@@ -86,19 +90,21 @@ console.log(videojs.dom)
     player.current.chapterMarkers();
 
     player.current.getChild('controlBar').addChild('vjsEpisodeList', {})
-
+    player.current.getChild('controlBar').addChild('EHFullscreenToggle', {
+        fullscreenElement: container.current
+    })
     player.current.ready(() => {
       setReady(true)
     })
     return () => {
       player.current.dispose()
     }
-  }, [])
+  }, [container.current])
 
   const Video = useCallback(
     ({children, ...props}) => {
       return (
-        <div data-vjs-player>
+        <div data-vjs-player ref={containerNode}>
           <video ref={videoNode} className="video-js" {...props}>
             {children}
           </video>
