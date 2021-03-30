@@ -93,19 +93,19 @@ console.log(videojs.dom)
     return () => {
       player.current.dispose()
     }
-  }, [changedKey])
+  }, [])
 
   const Video = useCallback(
     ({children, ...props}) => {
       return (
-        <div data-vjs-player key={changedKey}>
+        <div data-vjs-player>
           <video ref={videoNode} className="video-js" {...props}>
             {children}
           </video>
         </div>
       )
     },
-    [changedKey],
+    [],
   )
   return {Video, ready, player: player.current}
 }

@@ -5,6 +5,7 @@ import {usePlayerStore, useVideo} from 'components/player'
 import Controls from 'components/controls'
 import {useVideoJS} from "../hooks/use-video-js"
 import {isEmpty, first} from 'lodash'
+import {pickVideoResource} from "../components/resources";
 
 const video = {
     poster:
@@ -21,6 +22,8 @@ export default function Home() {
     //     url: video.hls_url,
     // })
 
+    const [videoResource, setVideoResource] = React.useState<any>(video)
+
     const [metadataTrack, setMetadataTrack] = React.useState<any>()
     const [metadataCues, setMetadataCues] = React.useState<any>([])
 
@@ -32,7 +35,6 @@ export default function Home() {
 
     const {Video: VideoJS, player: playerjs, ready} = useVideoJS({
         poster: video.poster,
-        sources: [{src: video.hls_url}],
         controls: true,
         playbackRates: [0.5, 1, 1.5, 2],
         responsive: true,
@@ -124,9 +126,10 @@ export default function Home() {
             {/*    />*/}
             {/*</Video>*/}
             {/*{player && <Controls player={player} fullscreenElemRef={containerRef} />}*/}
-            <VideoJS poster={video.poster} playsInline muted>
+            <VideoJS poster={videoResource.poster} playsInline muted>
+                <source src={videoResource.hls_url}/>
                 <track
-                    src={video.subtitlesUrl}
+                    src={videoResource.subtitlesUrl}
                     kind="subtitles"
                     srcLang="en"
                     label="English"
@@ -143,6 +146,15 @@ export default function Home() {
                 console.log(cue, cuejs)
                 return (<div className={cuejs.description === cue?.description ? 'text-blue-600' : ''} key={cuejs.description}>{cuejs.description}</div>)
             })}
+            <button onClick={() => {
+                setVideoResource(pickVideoResource('rxjs'))
+            }}>rxjs</button>
+            <button onClick={() => {
+                setVideoResource(pickVideoResource('testing'))
+            }}>testing</button>
+            <button onClick={() => {
+                setVideoResource(pickVideoResource('redux'))
+            }}>redux</button>
         </div>
     </div>
   )
