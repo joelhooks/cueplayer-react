@@ -28,7 +28,7 @@
   },
   "lint-staged": {
     "**/*.{js,css,md}": [
-      "npm run format-one",
+      "yarn format-one",
       "git add"
     ]
   },
