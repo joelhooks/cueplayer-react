@@ -16,8 +16,8 @@ error() {
 if [ -z "$TRAVIS" ]; then
   git checkout main
   git pull
-  npm install
-  npm run build
+  yarn install
+  yarn build
 fi
 
 if [ -z "$CURRENT_BRANCH" ]; then
@@ -26,7 +26,7 @@ if [ -z "$CURRENT_BRANCH" ]; then
 fi
 
 if [ -z "$VERSION" ]; then
-  error "Unable to get current npm version of this package"
+  error "Unable to get current yarn version of this package"
   exit 1
 fi
 
@@ -34,4 +34,4 @@ git tag -a $VERSION -m "release $VERSION"
 git push --set-upstream origin $CURRENT_BRANCH > /dev/null 2>&1
 git push --tags > /dev/null 2>&1
 
-success "pushed $VERSION tag to GitHub. If everything looks good, run: npm publish"
+success "pushed $VERSION tag to GitHub. If everything looks good, run: yarn publish"
