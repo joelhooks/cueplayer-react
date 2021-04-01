@@ -1,6 +1,6 @@
 {
   "name": "cueplayer-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "cueplayer-react is a web video player built from the ground up for an HTML5 world using React library.",
   "main": "lib/index.js",
   "style": "dist/cueplayer-react.css",
@@ -16,7 +16,7 @@
     "create-major": "sh scripts/release major",
     "create-minor": "sh scripts/release minor",
     "create-patch": "sh scripts/release patch",
-    "publish-release": "npm test && sh scripts/publish",
+    "publish-release": "yarn test && sh scripts/publish",
     "lint": "eslint src",
     "format-all": "prettier --config .prettierrc.js --write \\\\\\\"src/**/*.{js,json,md}\\\\\\\" \\\\\\\"docs/**/*.{js,json,md}\\\\\\\" \\\\\\\"*.{js,json,md}\\\\\\\"",
     "format-one": "prettier --config .prettierrc.js --write"
