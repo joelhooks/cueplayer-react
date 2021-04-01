@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Hls from '../../../../node_modules/hls.js/dist/hls';
+import Hls from '../../../node_modules/hls.js/dist/hls';
 
 export default class HLSSource extends Component {
   constructor(props, context) {

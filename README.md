@@ -2,6 +2,8 @@
 
 Cueplayer.React is forked from [video-react](https://github.com/video-react/video-react).
 
+That project has been left unmaintained. The goals of this fork are to extend and rework this React based video player to support timeline markers and rewrite in typescript.
+
 ## Installation
 
 Install `cueplayer-react` and **peer dependencies** via NPM
