@@ -6,6 +6,7 @@ import PosterImage from './components/PosterImage';
 import Slider from './components/Slider';
 import Bezel from './components/Bezel';
 import Shortcut from './components/Shortcut';
+import HLSSource from './components/HLSSource';
 
 import ControlBar from './components/control-bar/ControlBar';
 import PlayToggle from './components/control-bar/PlayToggle';
@@ -36,6 +37,7 @@ import { playerReducer, operationReducer } from './reducers';
 export {
   Player,
   Video,
+  HLSSource,
   BigPlayButton,
   LoadingSpinner,
   PosterImage,
