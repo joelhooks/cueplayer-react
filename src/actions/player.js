@@ -168,24 +168,26 @@ export function mute(
   };
 }
 
-export function toggleFullscreen(player) {
+export function toggleFullscreen(player, fullscreenElement) {
   if (fullscreen.enabled) {
+    const element = fullscreenElement || this.rootElement
     if (fullscreen.isFullscreen) {
-      fullscreen.exit();
+      fullscreen.exit()
     } else {
-      fullscreen.request(this.rootElement);
+      fullscreen.request(element)
     }
     return {
       type: OPERATE,
       operation: {
         action: 'toggle-fullscreen',
-        source: ''
-      }
-    };
+        source: '',
+      },
+    }
   }
 
   return {
     type: FULLSCREEN_CHANGE,
-    isFullscreen: !player.isFullscreen
-  };
+    isFullscreen: !player.isFullscreen,
+  }
 }
+
