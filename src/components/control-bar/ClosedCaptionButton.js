@@ -29,6 +29,19 @@ class ClosedCaptionButton extends Component {
     this.state = this.getTextTrackItems();
   }
 
+  componentDidMount() {
+    const { selected, player, actions } = this.props;
+    const { textTracks } = player;
+    if (selected && textTracks.length > 0) {
+      Array.from(textTracks).forEach((textTrack, i) => {
+        if (textTrack.language === selected.language) {
+          textTrack.mode = 'showing';
+          actions.activateTextTrack(textTrack);
+        }
+      });
+    }
+  }
+
   componentDidUpdate() {
     this.updateState();
   }
@@ -105,8 +118,9 @@ class ClosedCaptionButton extends Component {
   }
 
   handleSelectItem(index) {
-    const { player, actions, showOffMenu } = this.props;
+    const { player, actions, showOffMenu, onChange } = this.props;
     const { textTracks } = player;
+    let selectedTrack;
 
     // For the 'subtitles-off' button, the first condition will never match
     // so all subtitles will be turned off
@@ -114,11 +128,16 @@ class ClosedCaptionButton extends Component {
       // if it shows the `Off` menu, the first item is `Off`
       if (index === (showOffMenu ? i + 1 : i)) {
         textTrack.mode = 'showing';
-        actions.activateTextTrack(textTrack);
+        selectedTrack = textTrack;
+        actions.activateTextTrack(selectedTrack);
       } else {
         textTrack.mode = 'hidden';
       }
     });
+
+    if (onChange) {
+      onChange(selectedTrack);
+    }
   }
 
   render() {
