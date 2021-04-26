@@ -39,8 +39,12 @@ class PlaybackRateMenuButton extends Component {
       label: `${rate}x`,
       value: rate
     }));
+
+    // remember 0  is a "false" in JS 🥴
     const selectedIndex =
-      rates.indexOf(selected) || rates.indexOf(player.playbackRate) || 0;
+      rates.indexOf(selected) > -1
+        ? rates.indexOf(selected)
+        : rates.indexOf(player.playbackRate) || 0;
 
     return (
       <MenuButton
