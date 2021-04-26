@@ -15,8 +15,8 @@ const propTypes = {
 };
 
 export default class MenuButton extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.state = {
       active: false,

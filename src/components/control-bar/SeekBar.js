@@ -16,8 +16,8 @@ const propTypes = {
 };
 
 export default class SeekBar extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.getPercent = this.getPercent.bind(this);
     this.getNewTime = this.getNewTime.bind(this);

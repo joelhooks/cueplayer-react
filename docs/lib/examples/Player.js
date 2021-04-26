@@ -3,8 +3,8 @@ import { Player } from 'cueplayer-react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 export default class PlayerExample extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.state = {
       playerSource: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',

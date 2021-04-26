@@ -13,8 +13,8 @@ const defaultProps = {
 
 export default mode => {
   class ForwardReplayControl extends Component {
-    constructor(props, context) {
-      super(props, context);
+    constructor(props) {
+      super(props);
       this.handleClick = this.handleClick.bind(this);
     }
 

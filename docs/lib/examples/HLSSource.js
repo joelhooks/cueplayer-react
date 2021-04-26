@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Hls from '../../../node_modules/hls.js/dist/hls';
 
 export default class HLSSource extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.hls = new Hls();
   }
 

@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "style": "dist/cueplayer-react.css",
   "scripts": {
+    "dev": "cross-env BABEL_ENV=lib-dir babel --watch src --out-dir lib --ignore src/__tests__/ && rollup -cw",
     "test": "BABEL_ENV=test jest",
     "test:watch": "BABEL_ENV=test jest --watch",
     "test:coverage": "BABEL_ENV=test jest --coverage",

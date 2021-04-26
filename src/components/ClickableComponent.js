@@ -15,8 +15,8 @@ const defaultProps = {
 };
 
 export default class ClickableComponent extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.handleClick = this.handleClick.bind(this);
     this.handleFocus = this.handleFocus.bind(this);

@@ -436,7 +436,6 @@ export default class Player extends Component {
   }
 }
 
-Player.contextTypes = { store: PropTypes.object };
 Player.propTypes = propTypes;
 Player.defaultProps = defaultProps;
 Player.displayName = 'Player';

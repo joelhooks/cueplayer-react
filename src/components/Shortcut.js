@@ -17,8 +17,8 @@ const defaultProps = {
 };
 
 export default class Shortcut extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.defaultShortcuts = [
       {

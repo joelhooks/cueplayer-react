@@ -14,8 +14,8 @@ const defaultProps = {
 };
 
 export default class BigPlayButton extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.handleClick = this.handleClick.bind(this);
   }

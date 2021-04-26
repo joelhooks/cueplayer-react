@@ -14,8 +14,8 @@ const propTypes = {
 };
 
 class VolumeBar extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.state = {
       percentage: '0%'

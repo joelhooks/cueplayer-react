@@ -19,8 +19,8 @@ const defaultProps = {
 };
 
 class ClosedCaptionButton extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.getTextTrackItems = this.getTextTrackItems.bind(this);
     this.updateState = this.updateState.bind(this);

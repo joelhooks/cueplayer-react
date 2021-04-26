@@ -3,8 +3,8 @@ import PlaybackRateMenuButton from './PlaybackRateMenuButton';
 import { deprecatedWarning } from '../../utils';
 
 export default class PlaybackRate extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     deprecatedWarning('PlaybackRate', 'PlaybackRateMenuButton');
   }

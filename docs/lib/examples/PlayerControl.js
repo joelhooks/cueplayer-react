@@ -11,8 +11,8 @@ const sources = {
 };
 
 export default class PlayerControlExample extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.state = {
       source: sources.bunnyMovie

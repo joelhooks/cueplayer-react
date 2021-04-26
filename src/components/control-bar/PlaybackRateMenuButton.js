@@ -7,7 +7,9 @@ const propTypes = {
   player: PropTypes.object,
   actions: PropTypes.object,
   rates: PropTypes.array,
-  className: PropTypes.string
+  className: PropTypes.string,
+  onChange: PropTypes.func,
+  selected: PropTypes.number
 };
 
 const defaultProps = {
@@ -15,26 +17,30 @@ const defaultProps = {
 };
 
 class PlaybackRateMenuButton extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.handleSelectItem = this.handleSelectItem.bind(this);
   }
 
   handleSelectItem(index) {
-    const { rates, actions } = this.props;
+    const { rates, actions, onChange } = this.props;
     if (index >= 0 && index < rates.length) {
       actions.changeRate(rates[index]);
+      if (onChange) {
+        onChange(rates[index]);
+      }
     }
   }
 
   render() {
-    const { rates, player } = this.props;
+    const { rates, player, selected } = this.props;
     const items = rates.map(rate => ({
       label: `${rate}x`,
       value: rate
     }));
-    const selectedIndex = rates.indexOf(player.playbackRate) || 0;
+    const selectedIndex =
+      rates.indexOf(selected) || rates.indexOf(player.playbackRate) || 0;
 
     return (
       <MenuButton

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Player, Shortcut } from 'cueplayer-react';
 
 export default class ShortcutExample extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     // add your own shortcuts
     this.newShortcuts = [

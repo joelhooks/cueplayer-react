@@ -8,8 +8,8 @@ const propTypes = {
 };
 
 export default class Bezel extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.timer = null;
     props.manager.subscribeToOperationStateChange(

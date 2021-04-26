@@ -11,8 +11,8 @@ const propTypes = {
 };
 
 export default class ProgressControl extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.state = {
       mouseTime: {
