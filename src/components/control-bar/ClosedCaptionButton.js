@@ -32,8 +32,8 @@ class ClosedCaptionButton extends Component {
   componentDidMount() {
     const { selected, player, actions } = this.props;
     const { textTracks } = player;
-    if (selected && textTracks.length > 0) {
-      Array.from(textTracks).forEach((textTrack, i) => {
+    if (selected && textTracks?.length > 0) {
+      Array.from(textTracks).forEach(textTrack => {
         if (textTrack.language === selected.language) {
           textTrack.mode = 'showing';
           actions.activateTextTrack(textTrack);
