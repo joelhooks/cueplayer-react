@@ -6,8 +6,9 @@ import PosterImage from './components/PosterImage';
 import Slider from './components/Slider';
 import Bezel from './components/Bezel';
 import Shortcut from './components/Shortcut';
-import HLSSource from './components/HLSSource';
+// import HLSSource from './components/HLSSource';
 
+import CueBar from './components/cue-bar/CueBar';
 import ControlBar from './components/control-bar/ControlBar';
 import PlayToggle from './components/control-bar/PlayToggle';
 import ForwardControl from './components/control-bar/ForwardControl';
@@ -37,12 +38,13 @@ import { playerReducer, operationReducer } from './reducers';
 export {
   Player,
   Video,
-  HLSSource,
+  // HLSSource,
   BigPlayButton,
   LoadingSpinner,
   PosterImage,
   Bezel,
   Shortcut,
+  CueBar,
   ControlBar,
   PlayToggle,
   ForwardControl,

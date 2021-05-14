@@ -4919,10 +4919,10 @@ history@^3.0.0:
     query-string "^4.2.2"
     warning "^3.0.0"
 
-hls.js@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.0.2.tgz#95747d646c9254b8f67f6794a7616d8580d53539"
-  integrity sha512-zl5HtDFhzFTy+0XBbdBhszOXYji90eUN5W1rxy48RJdOaN0fqSPnv6Dir/Tc1kZWLikwCO+5Cuf//zluBt0DLQ==
+hls.js@^1.0.4-0.canary.7366:
+  version "1.0.4-0.canary.7366"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.0.4-0.canary.7366.tgz#612b929c60ca1ce6ffc034c36d216b1f93691c79"
+  integrity sha512-dGGgEDtkPQZGRmHGXPVlPgeboZJAqHPCA94qgUw2t5ho/wrPlnWuiU9kXMHhzES0BSduJazfKLEGTxDGYfvuBg==
 
 hmac-drbg@^1.0.1:
   version "1.0.1"
