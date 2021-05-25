@@ -1,6 +1,6 @@
 {
   "name": "cueplayer-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "cueplayer-react is a web video player built from the ground up for an HTML5 world using React library.",
   "main": "lib/index.js",
   "style": "dist/cueplayer-react.css",
@@ -80,7 +80,6 @@
     "@babel/runtime": "^7.4.5",
     "classnames": "^2.2.6",
     "global": "^4.4.0",
-
     "lodash": "^4.17.21",
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.7.2",

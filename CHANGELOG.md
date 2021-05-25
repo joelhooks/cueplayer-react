@@ -1,3 +1,8 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/joelhooks/cueplayer-react/compare/0.0.6...0.2.0) (2021-05-25)
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/joelhooks/cueplayer-react/compare/0.0.6...0.1.0) (2021-04-26)
 
