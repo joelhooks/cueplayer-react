@@ -66,10 +66,12 @@ const config = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(env)
     }),
+
     new StaticSiteGeneratorPlugin({
       paths,
       globals: {
-        window: {}
+        window: {},
+        navigator: { userAgent: { toLowerCase: () => 'Chrome' } }
       }
     }),
     new MiniCssExtractPlugin({

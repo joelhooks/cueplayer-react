@@ -14,7 +14,6 @@ import TimeDivider from '../time-controls/TimeDivider';
 import VolumeMenuButton from './VolumeMenuButton';
 import PlaybackRateMenuButton from './PlaybackRateMenuButton';
 import { mergeAndSortChildren } from '../../utils';
-import CuesButton from 'cueplayer-react/components/control-bar/Cues';
 
 const propTypes = {
   children: PropTypes.any,
@@ -46,8 +45,7 @@ export default class ControlBar extends Component {
       <TimeDivider key="time-divider" order={5.2} />,
       <DurationDisplay key="duration-display" order={5.3} />,
       <ProgressControl key="progress-control" order={6} />,
-      <FullscreenToggle key="fullscreen-toggle" order={8} />,
-      <CuesButton key="cues-button" order={9} />
+      <FullscreenToggle key="fullscreen-toggle" order={8} />
     ];
   }
 
@@ -67,8 +65,7 @@ export default class ControlBar extends Component {
         key="playback-rate"
         order={10}
       />,
-      <FullscreenToggle key="fullscreen-toggle" order={11} />,
-      <CuesButton key="cues-button" order={12} />
+      <FullscreenToggle key="fullscreen-toggle" order={11} />
     ];
   }
 

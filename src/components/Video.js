@@ -54,6 +54,7 @@ export default class Video extends Component {
     this.seek = this.seek.bind(this);
     this.forward = this.forward.bind(this);
     this.replay = this.replay.bind(this);
+    this.addTextTrack = this.addTextTrack.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.getProperties = this.getProperties.bind(this);
     this.renderChildren = this.renderChildren.bind(this);

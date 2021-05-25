@@ -5,7 +5,6 @@ import NotFound from './NotFound';
 import Components from './Components';
 import UI from './UI';
 import PlayerPage from './Components/PlayerPage';
-import CuesPage from './Components/CuesPage';
 import ShortcutPage from './Components/ShortcutPage';
 import BigPlayButtonPage from './Components/BigPlayButtonPage';
 import PosterImagePage from './Components/PosterImagePage';
@@ -31,7 +30,6 @@ const routes = (
       <IndexRedirect to="player/" />
       <Route path="player/" component={PlayerPage} />
       <Route path="shortcut/" component={ShortcutPage} />
-      <Route path="cues/" component={CuesPage} />
       <Route path="big-play-button/" component={BigPlayButtonPage} />
       <Route path="poster-image/" component={PosterImagePage} />
       <Route path="loading-spinner/" component={LoadingSpinnerPage} />
