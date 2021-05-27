@@ -24,6 +24,8 @@ export const LOADED_DATA = 'cueplayer-react/LOADED_DATA';
 export const RESIZE = 'cueplayer-react/RESIZE';
 export const ERROR = 'cueplayer-react/ERROR';
 export const ACTIVATE_TEXT_TRACK = 'cueplayer-react/ACTIVATE_TEXT_TRACK';
+export const ACTIVATE_METADATA_TRACK =
+  'cueplayer-react/ACTIVATE_METADATA_TRACK';
 
 export function handleLoadStart(videoProps) {
   return {
@@ -204,5 +206,12 @@ export function activateTextTrack(textTrack) {
   return {
     type: ACTIVATE_TEXT_TRACK,
     textTrack
+  };
+}
+
+export function activateMetadataTrack(metadataTrack) {
+  return {
+    type: ACTIVATE_METADATA_TRACK,
+    metadataTrack
   };
 }

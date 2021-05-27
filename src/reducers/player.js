@@ -24,7 +24,8 @@ import {
   LOADED_DATA,
   ACTIVATE_TEXT_TRACK,
   RESIZE,
-  ERROR
+  ERROR,
+  ACTIVATE_METADATA_TRACK
 } from '../actions/video';
 import {
   FULLSCREEN_CHANGE,
@@ -54,7 +55,8 @@ const initialState = {
   userActivity: true,
   isActive: false,
   isFullscreen: false,
-  activeTextTrack: null
+  activeTextTrack: null,
+  activeMetadataTracks: []
 };
 
 export default function player(state = initialState, action) {
@@ -171,6 +173,15 @@ export default function player(state = initialState, action) {
       return {
         ...state,
         activeTextTrack: action.textTrack
+      };
+    case ACTIVATE_METADATA_TRACK:
+      action.metadataTrack.mode = 'showing';
+      return {
+        ...state,
+        activeMetadataTracks: [
+          ...state.activeMetadataTracks,
+          action.metadataTrack
+        ]
       };
     default:
       return state;

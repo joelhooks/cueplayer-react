@@ -100,6 +100,11 @@ export default class Player extends Component {
     window.addEventListener('resize', this.handleResize);
 
     fullscreen.addEventListener(this.handleFullScreenChange);
+    this.getMetadataTextTracks();
+  }
+
+  componentDidUpdate() {
+    this.getMetadataTextTracks();
   }
 
   componentWillUnmount() {
@@ -267,6 +272,22 @@ export default class Player extends Component {
     return this.video.videoHeight;
   }
 
+  getMetadataTextTracks() {
+    const { player } = this.manager.getState();
+    const { textTracks } = player;
+    const tracks = Array.from(textTracks || []).filter(track => {
+      return ['metadata'].includes(track.kind);
+    });
+
+    tracks.forEach(textTrack => {
+      if (textTrack.mode !== 'showing') {
+        this.actions.activateMetadataTrack(textTrack);
+      }
+    });
+
+    return tracks;
+  }
+
   // play the video
   play() {
     this.video.play();
@@ -378,6 +399,7 @@ export default class Player extends Component {
   render() {
     const { fluid } = this.props;
     const { player } = this.manager.getState();
+
     const {
       paused,
       hasStarted,

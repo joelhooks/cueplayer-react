@@ -48,7 +48,8 @@ describe('player', () => {
       hasStarted: false,
       userActivity: true,
       isActive: false,
-      isFullscreen: false
+      isFullscreen: false,
+      activeMetadataTracks: []
     };
     expect(player(undefined, {})).toEqual(expectedInitialState);
   });
