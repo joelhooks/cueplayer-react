@@ -27,6 +27,9 @@ export const ACTIVATE_TEXT_TRACK = 'cueplayer-react/ACTIVATE_TEXT_TRACK';
 export const ACTIVATE_METADATA_TRACK =
   'cueplayer-react/ACTIVATE_METADATA_TRACK';
 
+export const ACTIVATE_METADATA_TRACK_CUE =
+  'cueplayer-react/ACTIVATE_METADATA_TRACK_CUE';
+
 export function handleLoadStart(videoProps) {
   return {
     type: LOAD_START,
@@ -213,5 +216,12 @@ export function activateMetadataTrack(metadataTrack) {
   return {
     type: ACTIVATE_METADATA_TRACK,
     metadataTrack
+  };
+}
+
+export function activateMetadataTrackCue(cue) {
+  return {
+    type: ACTIVATE_METADATA_TRACK_CUE,
+    cue
   };
 }
