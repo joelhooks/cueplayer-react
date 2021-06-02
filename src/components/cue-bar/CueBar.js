@@ -1,5 +1,6 @@
 import * as React from 'react'
 import classNames from 'classnames'
+import isEmpty from 'lodash'
 import {useCue} from './use-cue'
 
 const CueBar = ({className, disableCompletely, player, actions}) => {
@@ -12,6 +13,8 @@ const CueBar = ({className, disableCompletely, player, actions}) => {
   const noteCues = noteTracks.reduce((acc, track) => {
     return [...acc, ...Array.from(track.cues || [])]
   }, [])
+
+  disableCompletely = disableCompletely || isEmpty(noteCues)
 
   return disableCompletely ? null : (
     <div className={classNames('cueplayer-react-cue-bar', className)}>

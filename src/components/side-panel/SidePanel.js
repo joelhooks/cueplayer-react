@@ -1,8 +1,9 @@
 import * as React from 'react'
 import classNames from 'classnames'
+import isEmpty from 'lodash'
 
-const SidePanel = ({className, disableCompletely, player, actions}) => {
-  const {duration, activeMetadataTracks} = player
+const SidePanel = ({className, disableCompletely, player}) => {
+  const {activeMetadataTracks} = player
 
   const noteTracks = activeMetadataTracks.filter(track => {
     return track.label === 'notes'
@@ -11,6 +12,8 @@ const SidePanel = ({className, disableCompletely, player, actions}) => {
   const noteCues = noteTracks.reduce((acc, track) => {
     return [...acc, ...Array.from(track.cues || [])]
   }, [])
+
+  disableCompletely = disableCompletely || isEmpty(noteCues)
 
   return disableCompletely ? null : (
     <div className={classNames('cueplayer-react-side-panel', className)}>
