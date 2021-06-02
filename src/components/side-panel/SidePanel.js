@@ -1,6 +1,6 @@
 import * as React from 'react'
 import classNames from 'classnames'
-import isEmpty from 'lodash'
+import {isEmpty} from 'lodash'
 
 const SidePanel = ({className, disableCompletely, player}) => {
   const {activeMetadataTracks} = player

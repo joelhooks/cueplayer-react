@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import classNames from 'classnames'
 
+import {isEmpty} from 'lodash'
+
 import Manager from '../Manager'
 
 import BigPlayButton from './BigPlayButton'
@@ -11,13 +13,13 @@ import Video from './Video'
 import Bezel from './Bezel'
 import Shortcut from './Shortcut'
 import ControlBar from './control-bar/ControlBar'
+import CueBar from './cue-bar/CueBar'
+import SidePanel from './side-panel/SidePanel'
 
 import * as browser from '../utils/browser'
 import {focusNode} from '../utils/dom'
 import {mergeAndSortChildren, isVideoChild, throttle} from '../utils'
 import fullscreen from '../utils/fullscreen'
-import CueBar from 'cueplayer-react/components/cue-bar/CueBar'
-import SidePanel from 'cueplayer-react/components/side-panel/SidePanel'
 
 const propTypes = {
   children: PropTypes.any,
@@ -405,6 +407,7 @@ export default class Player extends Component {
       seeking,
       isFullscreen,
       userActivity,
+      activeMetadataTracks,
     } = player
 
     // all children get all props
@@ -417,6 +420,8 @@ export default class Player extends Component {
       video: this.video ? this.video.video : null,
     }
     const children = this.getChildren(props)
+
+    console.log(isEmpty(activeMetadataTracks))
 
     return (
       <div
@@ -433,6 +438,7 @@ export default class Player extends Component {
             'cueplayer-react-user-inactive': !userActivity,
             'cueplayer-react-user-active': userActivity,
             'cueplayer-react-workinghover': !browser.IS_IOS,
+            'cueplayer-react-cues-active': !isEmpty(activeMetadataTracks),
           },
           'cueplayer-react',
           this.props.className,

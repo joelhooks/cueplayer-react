@@ -1,6 +1,6 @@
 import * as React from 'react'
 import classNames from 'classnames'
-import isEmpty from 'lodash'
+import {isEmpty} from 'lodash'
 import {useCue} from './use-cue'
 
 const CueBar = ({className, disableCompletely, player, actions}) => {
