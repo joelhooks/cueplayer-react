@@ -143,7 +143,6 @@ export default class Player extends Component {
       <BigPlayButton key="big-play-button" order={4.0} />,
       <ControlBar key="control-bar" order={5.0} />,
       <CueBar key="cue-bar" order={6.0} />,
-
       <Shortcut key="shortcut" order={99.0} />,
     ]
   }

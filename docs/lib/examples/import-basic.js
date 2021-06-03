@@ -1,6 +1,7 @@
 import React from 'react'
-import {CueBar, Player, SidePanel} from 'cueplayer-react'
+import {Player} from 'cueplayer-react'
 import {PlayerProvider} from 'cueplayer-react/context/player-context'
+import SidePanel from '../Components/side-panel/SidePanel'
 
 export default props => {
   return (
@@ -18,10 +19,8 @@ export default props => {
             kind="metadata"
             label="notes"
           />
-
-          <CueBar order={6.0} />
         </Player>
-        <SidePanel order={1.0} />
+        <SidePanel />
       </div>
     </PlayerProvider>
   )
