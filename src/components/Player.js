@@ -112,8 +112,10 @@ export default class Player extends Component {
 
   componentDidUpdate() {
     this.getMetadataTextTracks()
-    const {player} = this.manager.getState()
-    this.context.setPlayer(player)
+    if (this.context?.setPlayer) {
+      const {player} = this.manager.getState()
+      this.context.setPlayer(player)
+    }
   }
 
   componentWillUnmount() {
