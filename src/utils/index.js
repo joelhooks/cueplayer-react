@@ -57,17 +57,6 @@ export function isVideoChild(c) {
   return c.type === 'source' || c.type === 'track'
 }
 
-// Check if the element belongs to a video element
-// only accept <source />, <track />,
-// <MyComponent isVideoChild />
-// elements
-export function isSidePanelChild(c) {
-  if (c.props && c.props.isSidePanelChild) {
-    return true
-  }
-  return c.type === 'SideBar'
-}
-
 const find = (elements, func) => elements.filter(func)[0]
 
 // check if two components are the same type

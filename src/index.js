@@ -21,7 +21,6 @@ import VolumeMenuButton from './components/control-bar/VolumeMenuButton'
 import PlaybackRateMenuButton from './components/control-bar/PlaybackRateMenuButton'
 import PlaybackRate from './components/control-bar/PlaybackRate'
 import ClosedCaptionButton from './components/control-bar/ClosedCaptionButton'
-import SidePanel from '../docs/lib/Components/side-panel/SidePanel'
 import CueBar from './components/cue-bar/CueBar'
 
 import RemainingTimeDisplay from './components/time-controls/RemainingTimeDisplay'
@@ -69,7 +68,6 @@ export {
   PlaybackRate,
   MenuButton,
   CueBar,
-  SidePanel,
   playerActions,
   videoActions,
   playerReducer,
