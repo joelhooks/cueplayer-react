@@ -33,6 +33,11 @@ import MenuButton from './components/menu/MenuButton'
 
 import * as playerActions from './actions/player'
 import * as videoActions from './actions/video'
+import {
+  PlayerProvider,
+  PlayerContext,
+  usePlayer,
+} from './context/player-context'
 import {playerReducer, operationReducer} from './reducers'
 
 export {
@@ -69,4 +74,7 @@ export {
   videoActions,
   playerReducer,
   operationReducer,
+  PlayerProvider,
+  PlayerContext,
+  usePlayer,
 }
