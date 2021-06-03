@@ -1,7 +1,7 @@
 import * as React from 'react'
 import classNames from 'classnames'
 import {isEmpty} from 'lodash'
-import {usePlayer} from '../../context/player-context'
+import {usePlayer} from 'cueplayer-react/context/player-context'
 
 const SidePanel = ({className, disableCompletely}) => {
   const {player} = usePlayer()
@@ -15,8 +15,6 @@ const SidePanel = ({className, disableCompletely}) => {
   const noteCues = noteTracks.reduce((acc, track) => {
     return [...acc, ...Array.from(track.cues || [])]
   }, [])
-
-  console.log(player)
 
   disableCompletely = disableCompletely || isEmpty(noteCues)
 
