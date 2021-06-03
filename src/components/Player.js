@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import classNames from 'classnames'
 
-import {isEmpty} from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 
 import Manager from '../Manager'
 

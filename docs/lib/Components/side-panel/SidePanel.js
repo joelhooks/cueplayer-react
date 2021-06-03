@@ -1,6 +1,6 @@
 import * as React from 'react'
 import classNames from 'classnames'
-import {isEmpty} from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import {usePlayer} from 'cueplayer-react/context/player-context'
 
 const SidePanel = ({className, disableCompletely}) => {
