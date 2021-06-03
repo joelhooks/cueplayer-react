@@ -1,9 +1,12 @@
 import * as React from 'react'
 import classNames from 'classnames'
 import {isEmpty} from 'lodash'
+import {usePlayer} from '../../context/player-context'
 
-const SidePanel = ({className, disableCompletely, player}) => {
-  const {activeMetadataTracks} = player
+const SidePanel = ({className, disableCompletely}) => {
+  const {player} = usePlayer()
+
+  const {activeMetadataTracks = []} = player
 
   const noteTracks = activeMetadataTracks.filter(track => {
     return track.label === 'notes'
@@ -12,6 +15,8 @@ const SidePanel = ({className, disableCompletely, player}) => {
   const noteCues = noteTracks.reduce((acc, track) => {
     return [...acc, ...Array.from(track.cues || [])]
   }, [])
+
+  console.log(player)
 
   disableCompletely = disableCompletely || isEmpty(noteCues)
 

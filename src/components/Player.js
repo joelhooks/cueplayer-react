@@ -14,12 +14,12 @@ import Bezel from './Bezel'
 import Shortcut from './Shortcut'
 import ControlBar from './control-bar/ControlBar'
 import CueBar from './cue-bar/CueBar'
-import SidePanel from './side-panel/SidePanel'
 
 import * as browser from '../utils/browser'
 import {focusNode} from '../utils/dom'
 import {mergeAndSortChildren, isVideoChild, throttle} from '../utils'
 import fullscreen from '../utils/fullscreen'
+import {PlayerContext} from '../context/player-context'
 
 const propTypes = {
   children: PropTypes.any,
@@ -103,10 +103,17 @@ export default class Player extends Component {
 
     fullscreen.addEventListener(this.handleFullScreenChange)
     this.getMetadataTextTracks()
+
+    if (this.context?.setPlayer) {
+      const {player} = this.manager.getState()
+      this.context.setPlayer(player)
+    }
   }
 
   componentDidUpdate() {
     this.getMetadataTextTracks()
+    const {player} = this.manager.getState()
+    this.context.setPlayer(player)
   }
 
   componentWillUnmount() {
@@ -136,7 +143,7 @@ export default class Player extends Component {
       <BigPlayButton key="big-play-button" order={4.0} />,
       <ControlBar key="control-bar" order={5.0} />,
       <CueBar key="cue-bar" order={6.0} />,
-      <SidePanel key="side-panel" order={7.0} />,
+
       <Shortcut key="shortcut" order={99.0} />,
     ]
   }
@@ -150,6 +157,7 @@ export default class Player extends Component {
     const children = React.Children.toArray(this.props.children).filter(
       e => !isVideoChild(e),
     )
+
     const defaultChildren = this.getDefaultChildren(originalChildren)
     return mergeAndSortChildren(defaultChildren, children, propsWithoutChildren)
   }
@@ -421,8 +429,6 @@ export default class Player extends Component {
     }
     const children = this.getChildren(props)
 
-    console.log(isEmpty(activeMetadataTracks))
-
     return (
       <div
         className={classNames(
@@ -463,6 +469,7 @@ export default class Player extends Component {
   }
 }
 
+Player.contextType = PlayerContext
 Player.propTypes = propTypes
 Player.defaultProps = defaultProps
 Player.displayName = 'Player'

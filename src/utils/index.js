@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 // NaN is the only value in javascript which is not equal to itself.
 // eslint-disable-next-line no-self-compare
-const isNaN = Number.isNaN || (value => value !== value);
+const isNaN = Number.isNaN || (value => value !== value)
 
 /**
  * @file format-time.js
@@ -18,32 +18,32 @@ const isNaN = Number.isNaN || (value => value !== value);
  * @function formatTime
  */
 export function formatTime(seconds = 0, guide = seconds) {
-  let s = Math.floor(seconds % 60);
-  let m = Math.floor((seconds / 60) % 60);
-  let h = Math.floor(seconds / 3600);
-  const gm = Math.floor((guide / 60) % 60);
-  const gh = Math.floor(guide / 3600);
+  let s = Math.floor(seconds % 60)
+  let m = Math.floor((seconds / 60) % 60)
+  let h = Math.floor(seconds / 3600)
+  const gm = Math.floor((guide / 60) % 60)
+  const gh = Math.floor(guide / 3600)
 
   // handle invalid times
   if (isNaN(seconds) || seconds === Infinity) {
     // '-' is false for all relational operators (e.g. <, >=) so this setting
     // will add the minimum number of fields specified by the guide
-    h = '-';
-    m = '-';
-    s = '-';
+    h = '-'
+    m = '-'
+    s = '-'
   }
 
   // Check if we need to show hours
-  h = h > 0 || gh > 0 ? `${h}:` : '';
+  h = h > 0 || gh > 0 ? `${h}:` : ''
 
   // If hours are showing, we may need to add a leading zero.
   // Always show at least one digit of minutes.
-  m = `${(h || gm >= 10) && m < 10 ? `0${m}` : m}:`;
+  m = `${(h || gm >= 10) && m < 10 ? `0${m}` : m}:`
 
   // Check if leading zero is need for seconds
-  s = s < 10 ? `0${s}` : s;
+  s = s < 10 ? `0${s}` : s
 
-  return h + m + s;
+  return h + m + s
 }
 
 // Check if the element belongs to a video element
@@ -52,28 +52,39 @@ export function formatTime(seconds = 0, guide = seconds) {
 // elements
 export function isVideoChild(c) {
   if (c.props && c.props.isVideoChild) {
-    return true;
+    return true
   }
-  return c.type === 'source' || c.type === 'track';
+  return c.type === 'source' || c.type === 'track'
 }
 
-const find = (elements, func) => elements.filter(func)[0];
+// Check if the element belongs to a video element
+// only accept <source />, <track />,
+// <MyComponent isVideoChild />
+// elements
+export function isSidePanelChild(c) {
+  if (c.props && c.props.isSidePanelChild) {
+    return true
+  }
+  return c.type === 'SideBar'
+}
+
+const find = (elements, func) => elements.filter(func)[0]
 
 // check if two components are the same type
 const isTypeEqual = (component1, component2) => {
-  const type1 = component1.type;
-  const type2 = component2.type;
+  const type1 = component1.type
+  const type2 = component2.type
 
   if (typeof type1 === 'string' || typeof type2 === 'string') {
-    return type1 === type2;
+    return type1 === type2
   }
 
   if (typeof type1 === 'function' && typeof type2 === 'function') {
-    return type1.displayName === type2.displayName;
+    return type1.displayName === type2.displayName
   }
 
-  return false;
-};
+  return false
+}
 
 // merge default children
 // sort them by `order` property
@@ -82,35 +93,35 @@ export function mergeAndSortChildren(
   defaultChildren,
   _children,
   _parentProps,
-  defaultOrder = 1
+  defaultOrder = 1,
 ) {
-  const children = React.Children.toArray(_children);
-  const { order, ...parentProps } = _parentProps; // ignore order from parent
+  const children = React.Children.toArray(_children)
+  const {order, ...parentProps} = _parentProps // ignore order from parent
   return children
     .filter(e => !e.props.disabled) // filter the disabled components
     .concat(
       defaultChildren.filter(
-        c => !find(children, component => isTypeEqual(component, c))
-      )
+        c => !find(children, component => isTypeEqual(component, c)),
+      ),
     )
     .map(element => {
       const defaultComponent = find(defaultChildren, c =>
-        isTypeEqual(c, element)
-      );
+        isTypeEqual(c, element),
+      )
 
-      const defaultProps = defaultComponent ? defaultComponent.props : {};
+      const defaultProps = defaultComponent ? defaultComponent.props : {}
       const props = {
         ...parentProps, // inherit from parent component
         ...defaultProps, // inherit from default component
-        ...element.props // element's own props
-      };
-      const e = React.cloneElement(element, props, element.props.children);
-      return e;
+        ...element.props, // element's own props
+      }
+      const e = React.cloneElement(element, props, element.props.children)
+      return e
     })
     .sort(
       (a, b) =>
-        (a.props.order || defaultOrder) - (b.props.order || defaultOrder)
-    );
+        (a.props.order || defaultOrder) - (b.props.order || defaultOrder),
+    )
 }
 
 /**
@@ -119,22 +130,22 @@ export function mergeAndSortChildren(
 export function deprecatedWarning(oldMethodCall, newMethodCall) {
   // eslint-disable-next-line no-console
   console.warn(
-    `WARNING: ${oldMethodCall} will be deprecated soon! Please use ${newMethodCall} instead.`
-  );
+    `WARNING: ${oldMethodCall} will be deprecated soon! Please use ${newMethodCall} instead.`,
+  )
 }
 
 export function throttle(callback, limit) {
-  let wait = false;
+  let wait = false
   return () => {
     if (!wait) {
       // eslint-disable-next-line prefer-rest-params
-      callback(...arguments);
-      wait = true;
+      callback(...arguments)
+      wait = true
       setTimeout(() => {
-        wait = false;
-      }, limit);
+        wait = false
+      }, limit)
     }
-  };
+  }
 }
 
 export const mediaProperties = [
@@ -171,5 +182,5 @@ export const mediaProperties = [
   'height',
   'videoWidth',
   'videoHeight',
-  'poster'
-];
+  'poster',
+]
