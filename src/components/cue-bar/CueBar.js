@@ -1,9 +1,23 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 import {useCue} from './use-cue'
 
-const CueBar = ({className, disableCompletely, player, actions}) => {
+const propTypes = {
+  autoHide: PropTypes.bool,
+  autoHideTime: PropTypes.number, // used in Player
+  disableDefaultControls: PropTypes.bool,
+  disableCompletely: PropTypes.bool,
+  className: PropTypes.string,
+}
+
+const defaultProps = {
+  autoHide: true,
+  disableCompletely: false,
+}
+
+const CueBar = ({className, disableCompletely, player, actions, autoHide}) => {
   const {duration, activeMetadataTracks} = player
 
   const noteTracks = activeMetadataTracks.filter(track => {
@@ -17,7 +31,13 @@ const CueBar = ({className, disableCompletely, player, actions}) => {
   disableCompletely = disableCompletely || isEmpty(noteCues)
 
   return disableCompletely ? null : (
-    <div className={classNames('cueplayer-react-cue-bar', className)}>
+    <div
+      className={classNames(
+        'cueplayer-react-cue-bar',
+        {'cueplayer-react-cue-bar-auto-hide': autoHide},
+        className,
+      )}
+    >
       {noteCues.map(noteCue => {
         return (
           <NoteCue
@@ -34,6 +54,10 @@ const CueBar = ({className, disableCompletely, player, actions}) => {
 }
 
 export default CueBar
+
+CueBar.propTypes = propTypes
+CueBar.defaultProps = defaultProps
+CueBar.displayName = 'CueBar'
 
 const CuePopup = ({cue, active}) => {
   const note = JSON.parse(cue.text)
