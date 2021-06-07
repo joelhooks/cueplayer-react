@@ -9,6 +9,28 @@
   background-color: #2b333f90;
 }
 
+// Video has started playing
+.cueplayer-react-has-started .cueplayer-react-cue-bar {
+  @include display-flex;
+  visibility: visible;
+  opacity: 1;
+
+  $trans: visibility 0.1s, opacity 0.1s; // Var needed because of comma
+  @include transition($trans);
+}
+
+// Video has started playing AND user is inactive
+.cueplayer-react-has-started.cueplayer-react-user-inactive.cueplayer-react-playing {
+  .cueplayer-react-cue-bar.cueplayer-react-cue-bar-auto-hide {
+    // Remain visible for screen reader and keyboard users
+    visibility: visible;
+    opacity: 0;
+
+    $trans: visibility 1s, opacity 1s;
+    @include transition($trans);
+  }
+}
+
 .cueplayer-react-cue-bar .cueplayer-react-cue-note {
   position: absolute;
   height: 100%;
