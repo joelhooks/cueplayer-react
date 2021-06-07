@@ -4,6 +4,8 @@ import classNames from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 import {useCue} from './use-cue'
 
+import CuePopup from './CuePopup'
+
 const propTypes = {
   autoHide: PropTypes.bool,
   autoHideTime: PropTypes.number, // used in Player
@@ -58,13 +60,6 @@ export default CueBar
 CueBar.propTypes = propTypes
 CueBar.defaultProps = defaultProps
 CueBar.displayName = 'CueBar'
-
-const CuePopup = ({cue, active}) => {
-  const note = JSON.parse(cue.text)
-  return active ? (
-    <div className="cueplayer-react-cue-popup">{note?.title}</div>
-  ) : null
-}
 
 const NoteCue = ({cue, duration, className, actions, player}) => {
   const setActive = useCue(cue, actions)
