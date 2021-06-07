@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 import {useCue} from './use-cue'
 
-import CuePopup from './CuePopup'
+import CueNote from './CueNote'
 
 const propTypes = {
   autoHide: PropTypes.bool,
@@ -21,6 +21,7 @@ const defaultProps = {
 
 const CueBar = ({className, disableCompletely, player, actions, autoHide}) => {
   const {duration, activeMetadataTracks} = player
+  const refCueBar = React.useRef()
 
   const noteTracks = activeMetadataTracks.filter(track => {
     return track.label === 'notes'
@@ -34,6 +35,7 @@ const CueBar = ({className, disableCompletely, player, actions, autoHide}) => {
 
   return disableCompletely ? null : (
     <div
+      ref={refCueBar}
       className={classNames(
         'cueplayer-react-cue-bar',
         {'cueplayer-react-cue-bar-auto-hide': autoHide},
@@ -42,12 +44,13 @@ const CueBar = ({className, disableCompletely, player, actions, autoHide}) => {
     >
       {noteCues.map(noteCue => {
         return (
-          <NoteCue
+          <CueNote
             key={noteCue.text}
             cue={noteCue}
             duration={duration}
             player={player}
             actions={actions}
+            refCueBar={refCueBar}
           />
         )
       })}
@@ -60,39 +63,3 @@ export default CueBar
 CueBar.propTypes = propTypes
 CueBar.defaultProps = defaultProps
 CueBar.displayName = 'CueBar'
-
-const NoteCue = ({cue, duration, className, actions, player}) => {
-  const setActive = useCue(cue, actions)
-  const [persist, setPersist] = React.useState(false)
-  const active = cue === player.activeMetadataTrackCue
-  const startPosition = `${(cue.startTime / duration) * 100}%`
-
-  return (
-    <div
-      className={classNames(
-        'cueplayer-react-cue-note',
-        {
-          'cueplayer-react-cue-note-active': active,
-          'cueplayer-react-cue-note-inactive': !active,
-        },
-        className,
-      )}
-      style={{left: startPosition}}
-      onClick={() => {
-        if (active && !persist) {
-          setPersist(true)
-        } else if (active) {
-          setActive(false)
-          setPersist(false)
-        } else {
-          setActive(true)
-          setPersist(true)
-        }
-      }}
-      onMouseOver={() => setActive(true)}
-      onMouseLeave={() => !persist && setActive(false)}
-    >
-      <CuePopup cue={cue} active={active} />
-    </div>
-  )
-}
