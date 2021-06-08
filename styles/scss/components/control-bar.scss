@@ -5,9 +5,12 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 3.0em;
+  height: 32px;
 
-  @include background-color-with-alpha($cueplayer-react-primary-background-color, $cueplayer-react-primary-background-transparency);
+  @include background-color-with-alpha(
+    $cueplayer-react-primary-background-color,
+    $cueplayer-react-primary-background-transparency
+  );
 }
 
 // Video has started playing
@@ -27,7 +30,7 @@
     visibility: visible;
     opacity: 0;
 
-    $trans: visibility 1.0s, opacity 1.0s;
+    $trans: visibility 1s, opacity 1s;
     @include transition($trans);
   }
 }
@@ -40,12 +43,14 @@
 }
 
 // Don't hide the control bar if it's audio
-.cueplayer-react-audio.cueplayer-react-has-started.cueplayer-react-user-inactive.cueplayer-react-playing .cueplayer-react-control-bar {
+.cueplayer-react-audio.cueplayer-react-has-started.cueplayer-react-user-inactive.cueplayer-react-playing
+  .cueplayer-react-control-bar {
   opacity: 1;
   visibility: visible;
 }
 
 // IE 8 + 9 Support
-.cueplayer-react-has-started.cueplayer-react-no-flex .cueplayer-react-control-bar {
+.cueplayer-react-has-started.cueplayer-react-no-flex
+  .cueplayer-react-control-bar {
   display: table;
 }

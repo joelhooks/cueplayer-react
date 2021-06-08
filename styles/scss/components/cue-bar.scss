@@ -2,32 +2,20 @@
   display: none;
   width: 100%;
   position: absolute;
-  bottom: 3em;
+  bottom: 32px;
   left: 0;
   right: 0;
-  height: 1.5em;
+  height: 16px;
   background-color: #2b333f90;
-}
-
-// Video has started playing
-.cueplayer-react-has-started .cueplayer-react-cue-bar {
-  @include display-flex;
-  visibility: visible;
-  opacity: 1;
-
-  $trans: visibility 0.1s, opacity 0.1s; // Var needed because of comma
+  $trans: all 0.5s;
   @include transition($trans);
+  animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
 }
 
 // Video has started playing AND user is inactive
 .cueplayer-react-has-started.cueplayer-react-user-inactive.cueplayer-react-playing {
-  .cueplayer-react-cue-bar.cueplayer-react-cue-bar-auto-hide {
-    // Remain visible for screen reader and keyboard users
-    visibility: visible;
-    opacity: 0;
-
-    $trans: visibility 1s, opacity 1s;
-    @include transition($trans);
+  .cueplayer-react-cue-bar {
+    bottom: 0;
   }
 }
 

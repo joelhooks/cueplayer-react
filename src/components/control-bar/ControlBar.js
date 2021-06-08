@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import classNames from 'classnames';
+import PropTypes from 'prop-types'
+import React, {Component} from 'react'
+import classNames from 'classnames'
 
-import ProgressControl from './ProgressControl';
-import PlayToggle from './PlayToggle';
-import ForwardControl from './ForwardControl';
-import ReplayControl from './ReplayControl';
-import FullscreenToggle from './FullscreenToggle';
-import RemainingTimeDisplay from '../time-controls/RemainingTimeDisplay';
-import CurrentTimeDisplay from '../time-controls/CurrentTimeDisplay';
-import DurationDisplay from '../time-controls/DurationDisplay';
-import TimeDivider from '../time-controls/TimeDivider';
-import VolumeMenuButton from './VolumeMenuButton';
-import PlaybackRateMenuButton from './PlaybackRateMenuButton';
-import { mergeAndSortChildren } from '../../utils';
+import ProgressControl from './ProgressControl'
+import PlayToggle from './PlayToggle'
+import ForwardControl from './ForwardControl'
+import ReplayControl from './ReplayControl'
+import FullscreenToggle from './FullscreenToggle'
+import RemainingTimeDisplay from '../time-controls/RemainingTimeDisplay'
+import CurrentTimeDisplay from '../time-controls/CurrentTimeDisplay'
+import DurationDisplay from '../time-controls/DurationDisplay'
+import TimeDivider from '../time-controls/TimeDivider'
+import VolumeMenuButton from './VolumeMenuButton'
+import PlaybackRateMenuButton from './PlaybackRateMenuButton'
+import {mergeAndSortChildren} from '../../utils'
 
 const propTypes = {
   children: PropTypes.any,
@@ -21,20 +21,20 @@ const propTypes = {
   autoHideTime: PropTypes.number, // used in Player
   disableDefaultControls: PropTypes.bool,
   disableCompletely: PropTypes.bool,
-  className: PropTypes.string
-};
+  className: PropTypes.string,
+}
 
 const defaultProps = {
   autoHide: true,
-  disableCompletely: false
-};
+  disableCompletely: false,
+}
 
 export default class ControlBar extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.getDefaultChildren = this.getDefaultChildren.bind(this);
-    this.getFullChildren = this.getFullChildren.bind(this);
+    this.getDefaultChildren = this.getDefaultChildren.bind(this)
+    this.getFullChildren = this.getFullChildren.bind(this)
   }
 
   getDefaultChildren() {
@@ -45,8 +45,8 @@ export default class ControlBar extends Component {
       <TimeDivider key="time-divider" order={5.2} />,
       <DurationDisplay key="duration-display" order={5.3} />,
       <ProgressControl key="progress-control" order={6} />,
-      <FullscreenToggle key="fullscreen-toggle" order={8} />
-    ];
+      <FullscreenToggle key="fullscreen-toggle" order={8} />,
+    ]
   }
 
   getFullChildren() {
@@ -65,39 +65,40 @@ export default class ControlBar extends Component {
         key="playback-rate"
         order={10}
       />,
-      <FullscreenToggle key="fullscreen-toggle" order={11} />
-    ];
+      <FullscreenToggle key="fullscreen-toggle" order={11} />,
+    ]
   }
 
   getChildren() {
-    const children = React.Children.toArray(this.props.children);
+    const children = React.Children.toArray(this.props.children)
     const defaultChildren = this.props.disableDefaultControls
       ? []
-      : this.getDefaultChildren();
-    const { className, ...parentProps } = this.props; // remove className
-    return mergeAndSortChildren(defaultChildren, children, parentProps);
+      : this.getDefaultChildren()
+    const {className, ...parentProps} = this.props // remove className
+    return mergeAndSortChildren(defaultChildren, children, parentProps)
   }
 
   render() {
-    const { autoHide, className, disableCompletely } = this.props;
-    const children = this.getChildren();
+    console.log('props: ', this.props)
+    const {autoHide, className, disableCompletely} = this.props
+    const children = this.getChildren()
 
     return disableCompletely ? null : (
       <div
         className={classNames(
           'cueplayer-react-control-bar',
           {
-            'cueplayer-react-control-bar-auto-hide': autoHide
+            'cueplayer-react-control-bar-auto-hide': autoHide,
           },
-          className
+          className,
         )}
       >
         {children}
       </div>
-    );
+    )
   }
 }
 
-ControlBar.propTypes = propTypes;
-ControlBar.defaultProps = defaultProps;
-ControlBar.displayName = 'ControlBar';
+ControlBar.propTypes = propTypes
+ControlBar.defaultProps = defaultProps
+ControlBar.displayName = 'ControlBar'
