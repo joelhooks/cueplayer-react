@@ -2,24 +2,20 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import isEmpty from 'lodash/isEmpty'
-import {useCue} from './use-cue'
 
 import CueNote from './CueNote'
 
 const propTypes = {
-  autoHide: PropTypes.bool,
-  autoHideTime: PropTypes.number, // used in Player
   disableDefaultControls: PropTypes.bool,
   disableCompletely: PropTypes.bool,
   className: PropTypes.string,
 }
 
 const defaultProps = {
-  autoHide: true,
   disableCompletely: false,
 }
 
-const CueBar = ({className, disableCompletely, player, actions, autoHide}) => {
+const CueBar = ({className, disableCompletely, player, actions}) => {
   const {duration, activeMetadataTracks} = player
   const refCueBar = React.useRef()
 
@@ -36,11 +32,7 @@ const CueBar = ({className, disableCompletely, player, actions, autoHide}) => {
   return disableCompletely ? null : (
     <div
       ref={refCueBar}
-      className={classNames(
-        'cueplayer-react-cue-bar',
-        {'cueplayer-react-cue-bar-auto-hide': autoHide},
-        className,
-      )}
+      className={classNames('cueplayer-react-cue-bar', className)}
     >
       {noteCues.map(noteCue => {
         return (
