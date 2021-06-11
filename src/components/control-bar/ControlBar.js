@@ -79,7 +79,6 @@ export default class ControlBar extends Component {
   }
 
   render() {
-    console.log('props: ', this.props)
     const {autoHide, className, disableCompletely} = this.props
     const children = this.getChildren()
 
