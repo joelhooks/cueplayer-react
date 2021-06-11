@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import classNames from 'classnames'
 
 import isEmpty from 'lodash/isEmpty'
+import intersection from 'lodash/intersection'
 
 import Manager from '../Manager'
 
@@ -128,7 +129,7 @@ export default class Player extends Component {
   }
 
   getDefaultChildren(originalChildren) {
-    return [
+    const defaultChildren = [
       <Video
         ref={c => {
           this.video = c
@@ -147,6 +148,18 @@ export default class Player extends Component {
       <CueBar key="cue-bar" order={6.0} />,
       <Shortcut key="shortcut" order={99.0} />,
     ]
+    const defaultChildrenKeys = defaultChildren.map(e => e.key)
+    const originalChildrenKeys = originalChildren.map(e => e.key)
+    const existingChildrenKeys = intersection(
+      originalChildrenKeys,
+      defaultChildrenKeys,
+    )
+
+    const children = defaultChildren.filter(
+      e => !existingChildrenKeys.includes(e.key),
+    )
+
+    return children
   }
 
   getChildren(props) {
