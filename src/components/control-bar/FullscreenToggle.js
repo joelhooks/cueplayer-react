@@ -1,40 +1,45 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import classNames from 'classnames';
+import PropTypes from 'prop-types'
+import React, {Component} from 'react'
+import classNames from 'classnames'
+import fullscreen from '../../utils/fullscreen'
 
 const propTypes = {
   actions: PropTypes.object,
   player: PropTypes.object,
   className: PropTypes.string,
-  fullscreenElement: PropTypes.any
-};
+  fullscreenElement: PropTypes.any,
+}
 
 export default class FullscreenToggle extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleClick() {
-    const { player, actions, fullscreenElement } = this.props;
-    actions.toggleFullscreen(player, fullscreenElement);
+    const {player, actions, fullscreenElement} = this.props
+
+    actions.toggleFullscreen(player, fullscreenElement)
+    if (fullscreenElement) {
+      actions.handleFullscreenChange(fullscreen.isFullscreen)
+    }
   }
 
   render() {
-    const { player, className } = this.props;
+    const {player, className} = this.props
     return (
       <button
         className={classNames(
           className,
           {
             'cueplayer-react-icon-fullscreen-exit': player.isFullscreen,
-            'cueplayer-react-icon-fullscreen': !player.isFullscreen
+            'cueplayer-react-icon-fullscreen': !player.isFullscreen,
           },
-          'cueplayer-react-fullscreen-control cueplayer-react-control cueplayer-react-button cueplayer-react-icon'
+          'cueplayer-react-fullscreen-control cueplayer-react-control cueplayer-react-button cueplayer-react-icon',
         )}
         ref={c => {
-          this.button = c;
+          this.button = c
         }}
         type="button"
         tabIndex="0"
@@ -42,9 +47,9 @@ export default class FullscreenToggle extends Component {
       >
         <span className="cueplayer-react-control-text">Non-Fullscreen</span>
       </button>
-    );
+    )
   }
 }
 
-FullscreenToggle.propTypes = propTypes;
-FullscreenToggle.displayName = 'FullscreenToggle';
+FullscreenToggle.propTypes = propTypes
+FullscreenToggle.displayName = 'FullscreenToggle'

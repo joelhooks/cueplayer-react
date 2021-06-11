@@ -38,6 +38,8 @@ import {
 } from './context/player-context'
 import {playerReducer, operationReducer} from './reducers'
 
+import fullscreen from './utils/fullscreen'
+
 export {
   Player,
   Video,
@@ -73,4 +75,5 @@ export {
   PlayerProvider,
   PlayerContext,
   usePlayer,
+  fullscreen,
 }
