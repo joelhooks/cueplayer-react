@@ -21,7 +21,10 @@ export default class FullscreenToggle extends Component {
     const {player, actions, fullscreenElement} = this.props
 
     actions.toggleFullscreen(player, fullscreenElement)
+
+    console.log('fullscreen click', {fullscreenElement})
     if (fullscreenElement) {
+      console.log('fullscreen action', {fullscreenElement})
       actions.handleFullscreenChange(fullscreen.isFullscreen)
     }
   }
