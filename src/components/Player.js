@@ -13,7 +13,6 @@ import Video from './Video'
 import Bezel from './Bezel'
 import Shortcut from './Shortcut'
 import ControlBar from './control-bar/ControlBar'
-import CueBar from './cue-bar/CueBar'
 
 import * as browser from '../utils/browser'
 import {focusNode} from '../utils/dom'
@@ -144,7 +143,6 @@ export default class Player extends Component {
       <Bezel key="bezel" order={3.0} />,
       <BigPlayButton key="big-play-button" order={4.0} />,
       <ControlBar key="control-bar" order={5.0} />,
-      <CueBar key="cue-bar" order={6.0} />,
       <Shortcut key="shortcut" order={99.0} />,
     ]
   }

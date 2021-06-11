@@ -56,5 +56,6 @@ dist
 build
 .next
 example/out
+.idea/
 
 

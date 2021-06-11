@@ -2,6 +2,7 @@ import React from 'react'
 import {Player} from 'cueplayer-react'
 import {PlayerProvider} from 'cueplayer-react/context/player-context'
 import SidePanel from '../Components/side-panel/SidePanel'
+import CueBar from '../Components/cue-bar/CueBar'
 
 export default props => {
   return (
@@ -34,6 +35,7 @@ export default props => {
           kind="metadata"
           label="notes"
         />
+        <CueBar />
       </Player>
     </PlayerProvider>
   )
