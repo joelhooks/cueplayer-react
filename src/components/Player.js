@@ -103,9 +103,8 @@ export default class Player extends Component {
     fullscreen.addEventListener(this.handleFullScreenChange)
     this.getMetadataTextTracks()
 
-    if (this.context?.setPlayer) {
-      const {player} = this.manager.getState()
-      this.context.setPlayer(player)
+    if (this.context?.setManager) {
+      this.context.setManager(this.manager)
     }
   }
 

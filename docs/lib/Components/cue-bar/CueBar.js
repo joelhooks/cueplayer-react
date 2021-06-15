@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import isEmpty from 'lodash/isEmpty'
 
 import CueNote from './CueNote'
+import {usePlayer} from 'cueplayer-react'
 
 const propTypes = {
   disableDefaultControls: PropTypes.bool,
@@ -15,7 +16,8 @@ const defaultProps = {
   disableCompletely: false,
 }
 
-const CueBar = ({className, disableCompletely, player, actions}) => {
+const CueBar = ({className, disableCompletely, actions}) => {
+  const {player, manager} = usePlayer()
   const {duration, activeMetadataTracks} = player
   const refCueBar = React.useRef()
 

@@ -1,3 +1,4 @@
+import {remove, isEqual, union} from 'lodash'
 import {
   LOAD_START,
   CAN_PLAY,
@@ -27,6 +28,7 @@ import {
   ERROR,
   ACTIVATE_METADATA_TRACK,
   ACTIVATE_METADATA_TRACK_CUE,
+  DEACTIVATE_METADATA_TRACK_CUE,
 } from '../actions/video'
 import {
   FULLSCREEN_CHANGE,
@@ -58,7 +60,7 @@ export const initialState = {
   isFullscreen: false,
   activeTextTrack: null,
   activeMetadataTracks: [],
-  activeMetadataTrackCue: null,
+  activeMetadataTrackCues: [],
 }
 
 export default function player(state = initialState, action) {
@@ -188,7 +190,17 @@ export default function player(state = initialState, action) {
     case ACTIVATE_METADATA_TRACK_CUE:
       return {
         ...state,
-        activeMetadataTrackCue: action.cue,
+        activeMetadataTrackCues: union(
+          [action.cue],
+          state.activeMetadataTrackCues,
+        ),
+      }
+    case DEACTIVATE_METADATA_TRACK_CUE:
+      return {
+        ...state,
+        activeMetadataTrackCues: remove(state.activeMetadataTrackCues, cue => {
+          return isEqual(action.cue, cue)
+        }),
       }
     default:
       return state

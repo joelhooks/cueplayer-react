@@ -18,6 +18,7 @@ import {
   PlayerProvider,
   usePlayer,
 } from 'cueplayer-react'
+import CueBar from '../Components/cue-bar/CueBar'
 
 export default () => {
   const container = React.useRef()
@@ -57,6 +58,7 @@ export default () => {
               order={12}
             />
           </ControlBar>
+          <CueBar />
         </Player>
       </div>
     </PlayerProvider>
