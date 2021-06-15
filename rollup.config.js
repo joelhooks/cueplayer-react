@@ -1,20 +1,20 @@
-import nodeResolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import babel from 'rollup-plugin-babel';
-import minify from 'rollup-plugin-babel-minify';
-import replace from 'rollup-plugin-replace';
-import sass from 'rollup-plugin-sass';
+import nodeResolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
+import babel from 'rollup-plugin-babel'
+import minify from 'rollup-plugin-babel-minify'
+import replace from 'rollup-plugin-replace'
+import sass from 'rollup-plugin-sass'
 // Require understands JSON files.
-const packageJson = require('./package.json');
+const packageJson = require('./package.json')
 
-const peerDependencies = Object.keys(packageJson.peerDependencies);
-const dependencies = Object.keys(packageJson.dependencies);
+const peerDependencies = Object.keys(packageJson.peerDependencies)
+const dependencies = Object.keys(packageJson.dependencies)
 
 function globals() {
   return {
     react: 'React',
-    'react-dom': 'ReactDOM'
-  };
+    'react-dom': 'ReactDOM',
+  }
 }
 
 function baseConfig() {
@@ -22,11 +22,11 @@ function baseConfig() {
     input: 'src/cueplayer-react.js',
     plugins: [
       sass({
-        output: 'dist/cueplayer-react.css'
+        output: 'dist/cueplayer-react.css',
       }),
       nodeResolve(),
       commonjs({
-        include: 'node_modules/**'
+        include: 'node_modules/**',
       }),
       babel({
         babelrc: false,
@@ -38,32 +38,35 @@ function baseConfig() {
               shippedProposals: true,
               modules: false,
               targets: {
-                ie: 9
-              }
-            }
+                edge: '17',
+                firefox: '60',
+                chrome: '67',
+                safari: '11.1',
+              },
+            },
           ],
-          '@babel/react'
-        ]
-      })
-    ]
-  };
+          '@babel/react',
+        ],
+      }),
+    ],
+  }
 }
 
 function baseUmdConfig(minified) {
   const config = Object.assign(baseConfig(), {
-    external: peerDependencies
-  });
+    external: peerDependencies,
+  })
   config.plugins.push(
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    })
-  );
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+  )
 
   if (minified) {
-    config.plugins.push(minify({ comments: false }));
+    config.plugins.push(minify({comments: false}))
   }
 
-  return config;
+  return config
 }
 
 /*
@@ -73,23 +76,23 @@ function baseUmdConfig(minified) {
   Goal of this configuration is to generate bundles to be consumed by bundlers.
   This configuration is not minimized and will import all dependencies.
 */
-const libConfig = baseConfig();
+const libConfig = baseConfig()
 // Do not include any of the dependencies
-libConfig.external = peerDependencies.concat(dependencies);
+libConfig.external = peerDependencies.concat(dependencies)
 libConfig.output = [
   {
     sourcemap: true,
     name: 'cueplayer-react',
     file: 'dist/cueplayer-react.cjs.js',
-    format: 'cjs'
+    format: 'cjs',
   },
   {
     sourcemap: true,
     name: 'cueplayer-react',
     file: 'dist/cueplayer-react.es.js',
-    format: 'es'
-  }
-];
+    format: 'es',
+  },
+]
 
 /*
   UMD CONFIG
@@ -116,74 +119,74 @@ libConfig.output = [
   included - `react` and `react-dom`.
 
 */
-const umdFullConfig = baseUmdConfig(false);
+const umdFullConfig = baseUmdConfig(false)
 umdFullConfig.output = [
   {
     globals: globals(),
     sourcemap: true,
     name: 'cueplayer-react',
     file: 'dist/cueplayer-react.full.js',
-    format: 'umd'
-  }
-];
+    format: 'umd',
+  },
+]
 
 // Validate globals in main UMD config
-const missingGlobals = peerDependencies.filter(dep => !(dep in globals()));
+const missingGlobals = peerDependencies.filter(dep => !(dep in globals()))
 if (missingGlobals.length) {
   console.error(
-    'All peer dependencies need to be mentioned in globals, please update rollup.config.js.'
-  );
-  console.error(`Missing: ${missingGlobals.join(', ')}`);
-  console.error('Aborting build.');
-  process.exit(1);
+    'All peer dependencies need to be mentioned in globals, please update rollup.config.js.',
+  )
+  console.error(`Missing: ${missingGlobals.join(', ')}`)
+  console.error('Aborting build.')
+  process.exit(1)
 }
 
-const umdFullConfigMin = baseUmdConfig(true);
+const umdFullConfigMin = baseUmdConfig(true)
 umdFullConfigMin.output = [
   {
     globals: globals(),
     sourcemap: true,
     name: 'cueplayer-react',
     file: 'dist/cueplayer-react.full.min.js',
-    format: 'umd'
-  }
-];
+    format: 'umd',
+  },
+]
 
-const external = umdFullConfig.external.slice();
-external.push('redux');
+const external = umdFullConfig.external.slice()
+external.push('redux')
 
 const allGlobals = Object.assign({}, globals(), {
-  redux: 'Redux'
-});
+  redux: 'Redux',
+})
 
-const umdConfig = baseUmdConfig(false);
-umdConfig.external = external;
+const umdConfig = baseUmdConfig(false)
+umdConfig.external = external
 umdConfig.output = [
   {
     globals: allGlobals,
     sourcemap: true,
     name: 'cueplayer-react',
     file: 'dist/cueplayer-react.js',
-    format: 'umd'
-  }
-];
+    format: 'umd',
+  },
+]
 
-const umdConfigMin = baseUmdConfig(true);
-umdConfigMin.external = external;
+const umdConfigMin = baseUmdConfig(true)
+umdConfigMin.external = external
 umdConfigMin.output = [
   {
     globals: allGlobals,
     sourcemap: true,
     name: 'cueplayer-react',
     file: 'dist/cueplayer-react.min.js',
-    format: 'umd'
-  }
-];
+    format: 'umd',
+  },
+]
 
 export default [
   libConfig,
   umdFullConfig,
   umdFullConfigMin,
   umdConfig,
-  umdConfigMin
-];
+  umdConfigMin,
+]

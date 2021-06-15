@@ -1,4 +1,6 @@
-import {remove, isEqual, union} from 'lodash'
+import remove from 'lodash.remove'
+import isEqual from 'lodash.isequal'
+import union from 'lodash.union'
 import {
   LOAD_START,
   CAN_PLAY,
