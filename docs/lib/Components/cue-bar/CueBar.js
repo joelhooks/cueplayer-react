@@ -1,10 +1,11 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash.isempty'
+
+import {usePlayer} from 'cueplayer-react'
 
 import CueNote from './CueNote'
-import {usePlayer} from 'cueplayer-react'
 
 const propTypes = {
   disableDefaultControls: PropTypes.bool,
