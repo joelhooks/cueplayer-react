@@ -35,6 +35,7 @@ import {
   PlayerProvider,
   PlayerContext,
   usePlayer,
+  playerAtom,
 } from './context/player-context'
 import {playerReducer, operationReducer} from './reducers'
 
@@ -76,4 +77,5 @@ export {
   PlayerContext,
   usePlayer,
   fullscreen,
+  playerAtom,
 }

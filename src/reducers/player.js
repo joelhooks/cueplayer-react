@@ -1,3 +1,5 @@
+import remove from 'lodash.remove'
+import isEqual from 'lodash.isequal'
 import {
   LOAD_START,
   CAN_PLAY,
@@ -192,7 +194,13 @@ export default function player(state = initialState, action) {
         activeMetadataTrackCues: [action.cue],
       }
     case DEACTIVATE_METADATA_TRACK_CUE:
-      return state
+      remove(state.activeMetadataTrackCues, cue => {
+        return isEqual(action.cue, cue)
+      })
+      return {
+        ...state,
+        activeMetadataTrackCues: [...state.activeMetadataTrackCues],
+      }
     default:
       return state
   }

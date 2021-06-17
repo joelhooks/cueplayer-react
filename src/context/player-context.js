@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {atom, useAtom} from 'jotai'
 import {initialState} from '../reducers/player'
 
 const defaultPlayerContext = {
@@ -6,6 +7,8 @@ const defaultPlayerContext = {
   setManager: () => {},
   getPlayer: () => initialState,
 }
+
+export const playerAtom = atom(initialState)
 
 export const PlayerContext = React.createContext(defaultPlayerContext)
 
@@ -15,7 +18,7 @@ export function usePlayer() {
 
 export const PlayerProvider = ({children}) => {
   const [manager, setManager] = React.useState()
-  const [player, setPlayer] = React.useState(initialState)
+  const [player, setPlayer] = useAtom(playerAtom)
 
   return (
     <PlayerContext.Provider value={{player, manager, setPlayer, setManager}}>

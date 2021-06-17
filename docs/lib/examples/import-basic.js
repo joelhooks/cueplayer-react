@@ -17,11 +17,15 @@ import {
   FullscreenToggle,
   PlayerProvider,
   usePlayer,
+  playerAtom,
 } from 'cueplayer-react'
 import CueBar from '../Components/cue-bar/CueBar'
+import {useAtom} from 'jotai'
 
 export default () => {
   const container = React.useRef()
+  const [player] = useAtom(playerAtom)
+
   return (
     <PlayerProvider>
       <div ref={container} style={{display: 'flex'}}>
