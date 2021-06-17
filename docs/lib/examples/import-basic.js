@@ -37,7 +37,7 @@ export default () => {
             kind="metadata"
             label="notes"
           />
-          <ControlBar disableDefaultControls autoHide={false}>
+          <ControlBar autoHide={false}>
             <PlayToggle key="play-toggle" order={1} />
             <ReplayControl key="replay-control" order={2} />
             <ForwardControl key="forward-control" order={3} />

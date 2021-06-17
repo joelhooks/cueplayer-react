@@ -80,6 +80,7 @@
     "@babel/runtime": "^7.4.5",
     "classnames": "^2.2.6",
     "global": "^4.4.0",
+    "jotai": "^1.0.0",
     "lodash.isempty": "^4.4.0",
     "lodash.isequal": "^4.5.0",
     "lodash.remove": "^4.7.0",
