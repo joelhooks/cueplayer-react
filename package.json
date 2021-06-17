@@ -1,6 +1,6 @@
 {
   "name": "cueplayer-react",
-  "version": "0.3.16",
+  "version": "0.3.17",
   "description": "cueplayer-react is a web video player built from the ground up for an HTML5 world using React library.",
   "main": "lib/index.js",
   "style": "dist/cueplayer-react.css",
