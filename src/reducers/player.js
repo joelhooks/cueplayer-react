@@ -30,6 +30,7 @@ import {
   ACTIVATE_METADATA_TRACK,
   ACTIVATE_METADATA_TRACK_CUE,
   DEACTIVATE_METADATA_TRACK_CUE,
+  CLEAR_ACTIVE_METADATA_TRACK_CUES,
 } from '../actions/video'
 import {
   FULLSCREEN_CHANGE,
@@ -97,6 +98,7 @@ export default function player(state = initialState, action) {
         ...action.videoProps,
         hasStarted: false,
         ended: false,
+        activeMetadataTrackCues: [],
       }
     case CAN_PLAY:
       return {
@@ -192,6 +194,11 @@ export default function player(state = initialState, action) {
       return {
         ...state,
         activeMetadataTrackCues: [action.cue],
+      }
+    case CLEAR_ACTIVE_METADATA_TRACK_CUES:
+      return {
+        ...state,
+        activeMetadataTrackCues: [],
       }
     case DEACTIVATE_METADATA_TRACK_CUE:
       remove(state.activeMetadataTrackCues, cue => {

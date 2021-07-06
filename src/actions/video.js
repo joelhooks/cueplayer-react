@@ -25,6 +25,8 @@ export const RESIZE = 'cueplayer-react/RESIZE'
 export const ERROR = 'cueplayer-react/ERROR'
 export const ACTIVATE_TEXT_TRACK = 'cueplayer-react/ACTIVATE_TEXT_TRACK'
 export const ACTIVATE_METADATA_TRACK = 'cueplayer-react/ACTIVATE_METADATA_TRACK'
+export const CLEAR_ACTIVE_METADATA_TRACK_CUES =
+  'cueplayer-react/CLEAR_ACTIVE_METADATA_TRACK_CUES'
 
 export const ACTIVATE_METADATA_TRACK_CUE =
   'cueplayer-react/ACTIVATE_METADATA_TRACK_CUE'
@@ -218,6 +220,12 @@ export function activateMetadataTrack(metadataTrack) {
   return {
     type: ACTIVATE_METADATA_TRACK,
     metadataTrack,
+  }
+}
+
+export function clearActiveMetadataTrackCues() {
+  return {
+    type: CLEAR_ACTIVE_METADATA_TRACK_CUES,
   }
 }
 

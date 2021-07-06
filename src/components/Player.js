@@ -110,8 +110,8 @@ export default class Player extends Component {
 
   componentDidUpdate() {
     this.getMetadataTextTracks()
+    const {player} = this.manager.getState()
     if (this.context?.setPlayer) {
-      const {player} = this.manager.getState()
       this.context.setPlayer(player)
     }
   }
@@ -280,13 +280,16 @@ export default class Player extends Component {
 
   getMetadataTextTracks() {
     const {player} = this.manager.getState()
-    const {textTracks} = player
+    const {textTracks, activeMetadataTracks} = player
     const tracks = Array.from(textTracks || []).filter(track => {
       return ['metadata'].includes(track.kind)
     })
 
     tracks.forEach(textTrack => {
-      if (textTrack.mode !== 'showing') {
+      if (
+        textTrack.mode !== 'showing' &&
+        !activeMetadataTracks.includes(textTrack)
+      ) {
         this.actions.activateMetadataTrack(textTrack)
       }
     })

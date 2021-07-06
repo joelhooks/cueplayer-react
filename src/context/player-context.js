@@ -5,7 +5,7 @@ import {initialState} from '../reducers/player'
 const defaultPlayerContext = {
   manager: {},
   setManager: () => {},
-  getPlayer: () => initialState,
+  setPlayer: () => initialState,
 }
 
 export const playerAtom = atom(initialState)
