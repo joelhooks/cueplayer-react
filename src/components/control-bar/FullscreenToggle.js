@@ -8,6 +8,7 @@ const propTypes = {
   player: PropTypes.object,
   className: PropTypes.string,
   fullscreenElement: PropTypes.any,
+  onFullscreenChange: PropTypes.func,
 }
 
 export default class FullscreenToggle extends Component {
@@ -27,10 +28,14 @@ export default class FullscreenToggle extends Component {
   }
 
   handleFullScreenChange(event) {
-    const {fullscreenElement, actions} = this.props
+    const {fullscreenElement, actions, onFullscreenChange} = this.props
 
     if (event.target === fullscreenElement) {
       actions.handleFullscreenChange(fullscreen.isFullscreen)
+    }
+
+    if (onFullscreenChange) {
+      onFullscreenChange(fullscreen.isFullscreen)
     }
   }
 
