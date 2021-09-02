@@ -9,6 +9,7 @@ const defaultPlayerContext = {
 }
 
 export const playerAtom = atom(initialState)
+export const managerAtom = atom()
 
 export const PlayerContext = React.createContext(defaultPlayerContext)
 
@@ -17,7 +18,7 @@ export function usePlayer() {
 }
 
 export const PlayerProvider = ({children}) => {
-  const [manager, setManager] = React.useState()
+  const [manager, setManager] = useAtom(managerAtom)
   const [player, setPlayer] = useAtom(playerAtom)
 
   return (
