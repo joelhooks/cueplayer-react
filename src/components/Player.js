@@ -452,7 +452,9 @@ export default class Player extends Component {
         )}
         style={this.getStyle()}
         ref={c => {
-          this.manager.rootElement = c
+          this.manager.rootElement = this.props?.rootElement
+            ? this.props?.rootElement
+            : c
         }}
         role="region"
         onTouchStart={this.handleMouseDown}
